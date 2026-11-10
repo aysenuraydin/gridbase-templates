@@ -1,0 +1,29 @@
+/* Bu şablonun rengi ve kendine özel stilleri. Rengi değiştirmek için --brand yeter, tonlar ondan türer. */
+:root {
+  --brand: #2563eb;
+  --brand-ink: #fff;
+}
+
+.settings { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 28px; align-items: start; }
+.settings-nav { position: sticky; top: calc(var(--topbar-h) + 24px); display: flex; flex-direction: column; gap: 2px; }
+.settings-nav a { display: flex; align-items: center; gap: 12px; padding: 9px 12px; border-radius: 10px; color: var(--ink-2); transition: background 0.12s; }
+.settings-nav a > .icon { color: var(--muted); }
+.settings-nav a:hover { background: var(--subtle); color: var(--ink); }
+.settings-nav a.on { background: var(--surface); box-shadow: var(--shadow-sm); border: 1px solid var(--line); padding: 8px 11px; }
+.settings-nav a.on > .icon { color: var(--brand); }
+.settings-nav a.danger.on > .icon, .settings-nav a.danger:hover > .icon { color: var(--danger); }
+.settings-nav .label { display: block; font-weight: 550; font-size: 0.9rem; color: var(--ink); }
+.settings-nav .desc { display: block; font-size: 0.78rem; color: var(--muted); }
+.danger-card { border-color: color-mix(in srgb, var(--danger) 30%, var(--line)); }
+.danger-card .card-foot { background: color-mix(in srgb, var(--danger) 4%, var(--surface)); border-top-color: color-mix(in srgb, var(--danger) 20%, var(--line)); }
+.saved { display: inline-flex; align-items: center; gap: 6px; margin-right: auto; color: var(--ok); font-size: 0.86rem; font-weight: 550; }
+.card-foot .error { margin-right: auto; }
+.avatar-edit { position: relative; cursor: pointer; flex: none; display: block; }
+.avatar-edit-btn { position: absolute; right: -2px; bottom: -2px; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--surface); border: 1px solid var(--line-strong); box-shadow: var(--shadow-sm); color: var(--ink-2); }
+.avatar-edit:hover .avatar-edit-btn { color: var(--brand); border-color: var(--brand); }
+@media (max-width: 760px) {
+  .settings { grid-template-columns: 1fr; gap: 16px; }
+  .settings-nav { position: static; flex-direction: row; overflow-x: auto; gap: 4px; margin: 0 -16px; padding: 0 16px 4px; }
+  .settings-nav a { flex: none; padding: 7px 12px; }
+  .settings-nav .desc { display: none; }
+}

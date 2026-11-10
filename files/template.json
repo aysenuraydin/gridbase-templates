@@ -1,0 +1,9 @@
+{
+  "name": "Dosyalar",
+  "description": "Drive gibi: klasörler, sürükle-bırak yükleme, önizleme, indirme, kişiyle paylaşma.",
+  "order": 8,
+  "sharing": true,
+  "tags": ["dosya", "paylaşım"],
+  "features": ["Her tür dosya (zip, dwg, pdf…), en çok 100 MB", "\"Row\" kovası: dosyayı, bağlı satırı okuyabilen indirir", "Klasörler, sürükle-bırak, resim/PDF önizleme", "Kişiyle paylaşma (salt okunur)", "İmzalı, süreli indirme linki"],
+  "tables": ["profiles", "drive_files"]
+}

@@ -1,0 +1,21 @@
+{
+  "categories": [
+    { "$ref": "tech", "name": "Elektronik", "slug": "elektronik" },
+    { "$ref": "wear", "name": "Giyim", "slug": "giyim" },
+    { "$ref": "home", "name": "Yaşam", "slug": "yasam" }
+  ],
+  "products": [
+    { "$ref": "p1", "name": "Kablosuz kulaklık", "description": "Aktif gürültü engelleme, 30 saat pil.", "price": 1899, "image": "/products/kulaklik.svg", "categoryId": "$tech", "stock": 25, "active": true },
+    { "name": "Akıllı saat", "description": "Nabız, uyku ve adım takibi; suya dayanıklı.", "price": 2499, "image": "/products/saat.svg", "categoryId": "$tech", "stock": 12, "active": true },
+    { "name": "Aksiyon kamerası", "description": "4K 60 fps, sabitleme, su altı kılıfı.", "price": 3299, "image": "/products/kamera.svg", "categoryId": "$tech", "stock": 6, "active": true },
+    { "$ref": "p4", "name": "Basic tişört", "description": "%100 pamuk, S–XL.", "price": 299, "image": "/products/tisort.svg", "categoryId": "$wear", "stock": 80, "active": true },
+    { "name": "Koşu ayakkabısı", "description": "Hafif taban, nefes alan üst yüzey.", "price": 1599, "image": "/products/ayakkabi.svg", "categoryId": "$wear", "stock": 18, "active": true },
+    { "name": "Deri çanta", "description": "El yapımı, laptop bölmeli.", "price": 1299, "image": "/products/canta.svg", "categoryId": "$wear", "stock": 9, "active": true },
+    { "name": "Filtre kahve 250 g", "description": "Etiyopya, orta kavrum.", "price": 249, "image": "/products/kahve.svg", "categoryId": "$home", "stock": 50, "active": true },
+    { "name": "Not defteri seti", "description": "3'lü, noktalı sayfa.", "price": 179, "image": "/products/kitap.svg", "categoryId": "$home", "stock": 40, "active": true }
+  ],
+  "reviews": [
+    { "productId": "$p1", "rating": 5, "body": "Gürültü engelleme gerçekten iyi.", "authorName": "Deniz", "createdAt": "2026-11-02T10:00:00.000Z" },
+    { "productId": "$p4", "rating": 4, "body": "Kumaşı güzel, bir beden büyük alın.", "authorName": "Selin", "createdAt": "2026-11-04T12:00:00.000Z" }
+  ]
+}

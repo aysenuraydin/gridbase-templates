@@ -1,0 +1,9 @@
+{
+  "name": "Blog",
+  "description": "Herkese açık yazılar, kategoriler, yorumlar; editör rolü yazar, yeni yoruma bildirim.",
+  "order": 3,
+  "tags": ["içerik", "roller", "bildirim"],
+  "features": ["Public okuma: girişsiz ziyaretçi okur", "Rol: yalnız editor yazar ve yayınlar", "Kapak resmi (herkese açık kova)", "Yorumlar (girişli kullanıcı)", "Push kuralı: yazına yorum gelince tarayıcı bildirimi", "Örnek veri"],
+  "tables": ["categories", "posts", "comments"],
+  "roles": ["editor"]
+}

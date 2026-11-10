@@ -1,0 +1,8 @@
+{
+  "name": "Kimlik tam paket",
+  "description": "Kayıt, onay kodu, şifremi unuttum, Google, profil + avatar, açık oturumlar, hesap silme.",
+  "order": 2,
+  "tags": ["kimlik", "hesap"],
+  "features": ["E-posta onayı zorunlu", "Şifremi unuttum (kodla)", "Google ile giriş", "Profil + avatar", "Şifre / e-posta değiştirme", "Açık oturumlar, tek cihazı kapatma, tümünden çık", "Hesap silme (App Store kuralı)"],
+  "tables": ["profiles"]
+}

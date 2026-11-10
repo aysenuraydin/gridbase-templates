@@ -1,0 +1,8 @@
+{
+  "name": "Todo",
+  "description": "Kişiye özel yapılacaklar listesi: resim ekleme, sekmeler arası anlık güncelleme.",
+  "order": 1,
+  "tags": ["başlangıç", "realtime"],
+  "features": ["E-posta ile kayıt / giriş", "Owner erişimi: herkes yalnız kendi satırlarını görür", "Realtime", "Özel dosya kovası"],
+  "tables": ["todos"]
+}

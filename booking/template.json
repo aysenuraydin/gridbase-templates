@@ -1,0 +1,9 @@
+{
+  "name": "Rezervasyon",
+  "description": "Hizmet seç, boş saati gör, randevu al; onay / iptal bildirimi. Kuaför, klinik, danışmanlık için.",
+  "order": 10,
+  "tags": ["randevu", "bildirim"],
+  "features": ["Public hizmet listesi", "Dolu saatler kişisel bilgi olmadan görünür", "Kişiye özel randevular (Owner)", "Push kuralı: randevu durumu değişince bildirim", "Örnek veri"],
+  "tables": ["services", "bookings", "busy_slots"],
+  "roles": ["admin"]
+}

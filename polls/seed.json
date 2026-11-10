@@ -1,0 +1,11 @@
+{
+  "polls": [
+    { "$ref": "p1", "question": "Hafta sonu ekip etkinliği ne olsun?", "options": "[\"Piknik\",\"Bowling\",\"Kaçış odası\",\"Evde film\"]", "authorName": "GridBase", "closed": false, "createdAt": "2026-11-08T09:00:00.000Z" },
+    { "question": "En sevdiğin çay saati?", "options": "[\"Sabah\",\"Öğle\",\"İkindi\",\"Gece\"]", "authorName": "GridBase", "closed": false, "createdAt": "2026-11-09T09:00:00.000Z" }
+  ],
+  "votes": [
+    { "pollId": "$p1", "option": 0 },
+    { "pollId": "$p1", "option": 2 },
+    { "pollId": "$p1", "option": 2 }
+  ]
+}

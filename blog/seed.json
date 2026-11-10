@@ -1,0 +1,58 @@
+{
+  "categories": [
+    { "$ref": "tech", "name": "Teknoloji", "slug": "teknoloji" },
+    { "$ref": "travel", "name": "Gezi", "slug": "gezi" },
+    { "$ref": "food", "name": "Mutfak", "slug": "mutfak" }
+  ],
+  "posts": [
+    {
+      "$ref": "p1",
+      "title": "Backend yazmadan uygulama çıkarmak",
+      "slug": "backend-yazmadan-uygulama",
+      "excerpt": "Kimlik, tablolar, dosyalar ve bildirimler hazırsa geriye yalnız ürünün kendisi kalır.",
+      "body": "Her yeni projede aynı şeyleri yeniden yazıyoruz: kayıt ekranı, şifremi unuttum, dosya yükleme, yetki kontrolü.\n\n## Neyi hazır alıyoruz?\n\nKimlik akışları, kurallı tablolar, dosya kovaları, realtime ve push bildirimleri. Bu blog da onlarla çalışıyor: yazıları herkes okuyor, yalnız editor rolündekiler yazıyor.\n\n## Sırada ne var?\n\nKendi tablonu gridbase.config.ts'e ekle, npx @gridbasetr/cli apply çalıştır, kodda kullan. Hepsi bu.",
+      "coverImage": "/covers/tech.svg",
+      "categoryId": "$tech",
+      "authorName": "GridBase Ekibi",
+      "published": true,
+      "publishedAt": "2026-11-01T09:00:00.000Z"
+    },
+    {
+      "$ref": "p2",
+      "title": "Ege kıyısında üç gün",
+      "slug": "ege-kiyisinda-uc-gun",
+      "excerpt": "Sabah kahvesi, öğlen deniz, akşam zeytinyağlılar. Kısa bir rota önerisi.",
+      "body": "Kısa bir kaçamak için Ege'nin küçük koylarını seçtik.\n\n## 1. gün\n\nSabah erkenden yola çıkıp öğlene doğru köye vardık. Öğleden sonra deniz.\n\n## 2. gün\n\nAntik kentte yürüyüş, akşam limanda balık.\n\n## 3. gün\n\nPazar yerinden zeytin ve kekik alıp dönüş.",
+      "coverImage": "/covers/travel.svg",
+      "categoryId": "$travel",
+      "authorName": "GridBase Ekibi",
+      "published": true,
+      "publishedAt": "2026-11-03T09:00:00.000Z"
+    },
+    {
+      "$ref": "p3",
+      "title": "On beş dakikada mercimek çorbası",
+      "slug": "mercimek-corbasi",
+      "excerpt": "Kış akşamlarının vazgeçilmezi, düdüklüde değil tencerede, kısa yoldan.",
+      "body": "Malzemeler: bir su bardağı kırmızı mercimek, bir soğan, bir havuç, bir yemek kaşığı salça, tereyağı.\n\n## Yapılışı\n\nSoğanı ve havucu tereyağında kavur, salçayı ekle. Mercimeği ve beş bardak sıcak suyu ekleyip on beş dakika kaynat. Blenderdan geçir, limonla servis et.",
+      "coverImage": "/covers/food.svg",
+      "categoryId": "$food",
+      "authorName": "GridBase Ekibi",
+      "published": true,
+      "publishedAt": "2026-11-05T09:00:00.000Z"
+    },
+    {
+      "title": "Taslak: yakında",
+      "slug": "taslak",
+      "excerpt": "Bu yazı taslak; yalnız editörler listede görür.",
+      "body": "Taslak metni.",
+      "categoryId": "$tech",
+      "authorName": "GridBase Ekibi",
+      "published": false
+    }
+  ],
+  "comments": [
+    { "postId": "$p1", "body": "Tam aradığım şey, teşekkürler!", "authorName": "Okur", "createdAt": "2026-11-02T10:00:00.000Z" },
+    { "postId": "$p2", "body": "Rotayı kaydettim, bu yaz deneyeceğim.", "authorName": "Gezgin", "createdAt": "2026-11-04T18:30:00.000Z" }
+  ]
+}

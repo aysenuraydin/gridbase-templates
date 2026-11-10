@@ -1,0 +1,35 @@
+/* Bu şablonun rengi ve kendine özel stilleri. Rengi değiştirmek için --brand yeter, tonlar ondan türer. */
+:root {
+  --brand: #059669;
+  --brand-ink: #fff;
+}
+
+.composer .card-body { padding-bottom: 12px; }
+.composer-title, .composer-body { border: 0; box-shadow: none !important; padding: 0; background: transparent; }
+.composer-title { font-weight: 600; font-size: 1rem; min-height: 32px; }
+.composer-body { min-height: 72px; padding-left: 38px; }
+.composer:focus-within { border-color: var(--brand-line); box-shadow: var(--ring); }
+.announcement { display: flex; flex-direction: column; gap: 10px; }
+.announcement h3 { font-size: 1.05rem; margin-top: 4px; }
+.announcement p { white-space: pre-wrap; color: var(--ink-2); line-height: 1.65; }
+.users-head { display: flex; align-items: center; gap: 14px; padding: 10px 18px; border-bottom: 1px solid var(--line); background: var(--surface-2); font-size: 0.74rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+.col-roles { width: 300px; flex: none; }
+.col-date { width: 90px; flex: none; }
+.col-act { width: 140px; flex: none; display: flex; justify-content: flex-end; }
+.user-row.blocked > .grow { opacity: 0.55; }
+.role-add { position: relative; display: inline-flex; flex-direction: row; align-items: center; gap: 3px; height: 22px; padding: 0 8px; border-radius: 99px; border: 1px dashed var(--line-strong); color: var(--muted); font-size: 0.74rem; font-weight: 600; cursor: pointer; }
+.role-add:hover { border-color: var(--brand); color: var(--brand-text); }
+.role-add select { position: absolute; inset: 0; opacity: 0; cursor: pointer; min-height: 0; padding: 0; }
+.me-cover { height: 96px; background: radial-gradient(100% 140% at 0% 0%, color-mix(in srgb, var(--brand) 60%, #fff), var(--brand) 60%, color-mix(in srgb, var(--brand) 70%, #000)); }
+.me-id { display: flex; gap: 18px; align-items: flex-start; }
+.me-avatar { margin-top: -40px; box-shadow: 0 0 0 4px var(--surface); }
+@media (max-width: 860px) {
+  .users-head { display: none; }
+  .user-row { flex-wrap: wrap; }
+  .user-row > .grow { flex-basis: 100%; }
+  .col-roles { width: auto; flex: 1; padding-left: 50px; }
+  .col-date { display: none; }
+  .col-act { width: auto; }
+}
+.me-meta { padding-top: 52px; min-width: 0; }
+@media (max-width: 640px) { .me-id { flex-direction: column; gap: 10px; } .me-meta { padding-top: 0; } .composer .hint { font-size: 0.78rem; } }

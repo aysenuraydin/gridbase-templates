@@ -1,0 +1,45 @@
+/* Bu şablonun rengi ve kendine özel stilleri. Rengi değiştirmek için --brand yeter, tonlar ondan türer. */
+:root {
+  --brand: #d97706;
+  --brand-ink: #fff;
+}
+
+/* Not renkleri: tone-0 varsayılan … tone-5 mor (sıra NotesPage COLORS ile aynı) */
+.tone-0 { --note: var(--surface); --note-line: var(--line); }
+.tone-1 { --note: #fef7d6; --note-line: #f6e7a6; }
+.tone-2 { --note: #e3f8e9; --note-line: #c3ebcf; }
+.tone-3 { --note: #e3eefe; --note-line: #c6dbfb; }
+.tone-4 { --note: #fdebf4; --note-line: #f7cfe2; }
+.tone-5 { --note: #efebfe; --note-line: #dcd3fb; }
+@media (prefers-color-scheme: dark) {
+  .tone-1 { --note: #2b2512; --note-line: #4a3f17; }
+  .tone-2 { --note: #13281b; --note-line: #1f4a2e; }
+  .tone-3 { --note: #13213a; --note-line: #213a63; }
+  .tone-4 { --note: #2d1622; --note-line: #52253b; }
+  .tone-5 { --note: #201a38; --note-line: #382c66; }
+}
+.notes-grid { columns: 4 240px; column-gap: 14px; }
+.notes-grid > * { break-inside: avoid; margin-bottom: 14px; }
+.note-card { position: relative; display: flex; flex-direction: column; gap: 8px; padding: 16px 16px 10px; border-radius: 16px; background: var(--note); border: 1px solid var(--note-line); cursor: pointer; transition: box-shadow 0.2s var(--ease), transform 0.2s var(--ease), border-color 0.15s; }
+.note-card:hover { box-shadow: var(--shadow-md); border-color: color-mix(in srgb, var(--ink) 14%, var(--note-line)); }
+.note-card:focus-visible { box-shadow: var(--ring); }
+.note-card h3 { font-size: 0.98rem; font-weight: 600; padding-right: 20px; word-break: break-word; }
+.note-body { font-size: 0.9rem; color: var(--ink-2); white-space: pre-wrap; word-break: break-word; display: -webkit-box; -webkit-line-clamp: 10; -webkit-box-orient: vertical; overflow: hidden; }
+.note-pin { position: absolute; top: 14px; right: 14px; color: var(--muted); }
+.note-card footer { display: flex; align-items: center; gap: 6px; min-height: 30px; margin-top: 2px; }
+.note-date { font-size: 0.76rem; color: var(--muted); }
+.note-card .avatar-stack .avatar { box-shadow: 0 0 0 2px var(--note); }
+.note-card .icon-btn:hover { background: color-mix(in srgb, var(--ink) 7%, transparent); }
+@media (hover: hover) { .note-actions { opacity: 0; transition: opacity 0.15s; } .note-card:hover .note-actions, .note-actions:focus-within { opacity: 1; } }
+.note-editor { max-width: 620px; background: var(--note); border-color: var(--note-line); display: flex; flex-direction: column; overflow: hidden; }
+.note-readonly { display: flex; align-items: center; gap: 6px; margin: 16px 20px 0; font-size: 0.78rem; font-weight: 550; color: var(--muted); }
+.note-title-input, .note-body-input { border: 0; box-shadow: none !important; background: transparent; padding: 0 20px; }
+.note-title-input { font-size: 1.25rem; font-weight: 650; letter-spacing: -0.02em; min-height: 0; padding-top: 20px; padding-bottom: 6px; }
+.note-body-input { min-height: 260px; font-size: 0.98rem; line-height: 1.65; resize: none; padding-bottom: 16px; }
+.note-toolbar { display: flex; align-items: center; gap: 8px; padding: 10px 12px 10px 16px; border-top: 1px solid var(--note-line); flex-wrap: wrap; }
+.note-swatches { display: flex; gap: 6px; margin-right: 4px; }
+.swatch { width: 24px; height: 24px; border-radius: 50%; background: var(--note); border: 1px solid color-mix(in srgb, var(--ink) 18%, var(--note-line)); cursor: pointer; padding: 0; transition: transform 0.12s; }
+.swatch:hover { transform: scale(1.1); }
+.swatch.on { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--brand); }
+.icon-btn.pinned { color: var(--brand); background: var(--brand-soft); }
+@media (max-width: 640px) { .notes-grid { columns: 2; column-gap: 10px; } .notes-grid > * { margin-bottom: 10px; } .note-card { padding: 14px 14px 8px; } .note-body { font-size: 0.85rem; } .note-card h3 { font-size: 0.92rem; } }

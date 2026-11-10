@@ -1,0 +1,8 @@
+{
+  "name": "Sohbet",
+  "description": "Birebir ve grup sohbeti: anlık mesaj, \"yazıyor…\", çevrimiçi göstergesi, mesaj bildirimi.",
+  "order": 4,
+  "tags": ["realtime", "bildirim"],
+  "features": ["Katılımcı kolonu: mesajı yalnız sohbetteki kişiler okur", "Realtime: mesaj anında gelir", "Odalar: \"yazıyor…\" ve çevrimiçi (tabloya yazılmaz)", "Push kuralı: yeni mesaj bildirimi", "Kişi rehberi"],
+  "tables": ["profiles", "conversations", "messages"]
+}

@@ -1,0 +1,9 @@
+{
+  "name": "E-ticaret (demo)",
+  "description": "Ürünler, sepet, adres, sipariş (kapıda ödeme), yorumlar; yönetici ürün ekler, sipariş durumu değişince bildirim.",
+  "order": 5,
+  "tags": ["ticaret", "roller", "bildirim", "demo"],
+  "features": ["Public ürün kataloğu, kategori, arama", "Kişiye özel sepet, adres ve siparişler (Owner)", "Rol: yalnız admin ürün ekler / düzenler", "Ürün görselleri (herkese açık kova)", "Push kuralı: sipariş durumu değişince müşteriye bildirim", "Demo: ödeme yok, kapıda ödeme; toplam istemcide hesaplanır"],
+  "tables": ["categories", "products", "cart_items", "addresses", "orders", "reviews"],
+  "roles": ["admin"]
+}

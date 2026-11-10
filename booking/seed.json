@@ -1,0 +1,8 @@
+{
+  "services": [
+    { "name": "Saç kesimi", "description": "Yıkama + kesim + fön", "durationMin": 30, "price": 350 },
+    { "name": "Sakal tıraşı", "description": "Sıcak havlu ile", "durationMin": 30, "price": 200 },
+    { "name": "Boya", "description": "Tek renk, uzunluğa göre değişir", "durationMin": 90, "price": 1200 },
+    { "name": "Danışmanlık görüşmesi", "description": "Online ya da yüz yüze, 1 saat", "durationMin": 60, "price": 750 }
+  ]
+}

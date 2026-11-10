@@ -1,0 +1,9 @@
+{
+  "name": "Notlar",
+  "description": "Renkli notlar, sabitleme, arama; notu başka kullanıcıyla paylaş (salt okunur), değişiklik anında.",
+  "order": 7,
+  "sharing": true,
+  "tags": ["paylaşım", "realtime"],
+  "features": ["Owner + katılımcı kolonu: paylaştığın kişi okur, yazamaz", "E-postayla paylaşma (kişi rehberi)", "Realtime: paylaşılan not anında güncellenir", "Arama, sabitleme, renk"],
+  "tables": ["profiles", "notes"]
+}

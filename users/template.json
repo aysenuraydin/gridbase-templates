@@ -1,0 +1,9 @@
+{
+  "name": "Kullanıcı yönetimi",
+  "description": "Uygulama içi yönetici paneli: kullanıcıları ara, rol ver / al, engelle; role göre açılan ekranlar.",
+  "order": 6,
+  "tags": ["roller", "yönetim"],
+  "features": ["Uygulama içi yöneticiler (project.adminRoles): secret key'siz yönetim", "Kullanıcı listesi, arama, sayfalama", "Rol ver / al (yönetici rolü hariç)", "Engelle / aç", "Role göre ekran: moderatör duyuru yazar"],
+  "tables": ["announcements"],
+  "roles": ["admin", "moderator", "premium"]
+}

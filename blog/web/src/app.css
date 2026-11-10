@@ -1,0 +1,70 @@
+/* Bu şablonun rengi ve kendine özel stilleri. Rengi değiştirmek için --brand yeter, tonlar ondan türer. */
+:root {
+  --brand: #c2410c;
+  --brand-ink: #fff;
+}
+:root { --font-serif: 'Newsreader', Georgia, 'Times New Roman', serif; }
+
+/* ── Ana sayfa ── */
+.blog-hero { max-width: 720px; display: flex; flex-direction: column; gap: 12px; padding: 24px 0 28px; }
+.blog-hero h1, .article h1, .post-card h2, .post-card h3, .editor-title, .comments h2 { font-family: var(--font-serif); font-weight: 600; letter-spacing: -0.015em; }
+.blog-hero h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); line-height: 1.05; }
+.blog-hero p { color: var(--muted); font-size: 1.08rem; }
+.blog-cats { margin-bottom: 32px; }
+.post-grid { display: grid; gap: 36px 28px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+.post-card { display: flex; flex-direction: column; gap: 16px; color: inherit; }
+.post-card:hover { color: inherit; }
+.post-card .cover { width: 100%; aspect-ratio: 1200 / 630; object-fit: cover; border-radius: 14px; border: 1px solid var(--line); transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease); }
+.post-card:hover .cover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.post-card h3 { font-size: 1.4rem; line-height: 1.2; transition: color 0.15s; }
+.post-card:hover h3, .post-card:hover h2 { color: var(--brand-text); }
+.post-meta-wrap { display: flex; flex-direction: column; gap: 8px; }
+.excerpt { color: var(--muted); font-size: 0.96rem; line-height: 1.6; }
+.byline { display: flex; align-items: center; gap: 7px; font-size: 0.82rem; color: var(--muted); margin-top: 4px; }
+.byline .strong { font-weight: 550; }
+.post-card.featured { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 36px; align-items: center; margin-bottom: 48px; padding-bottom: 48px; border-bottom: 1px solid var(--line); }
+.post-card.featured h2 { font-size: clamp(1.8rem, 3.2vw, 2.5rem); line-height: 1.1; }
+.post-card.featured .excerpt { font-size: 1.05rem; }
+.site-foot { border-top: 1px solid var(--line); background: var(--surface); }
+.site-foot .page { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+/* ── Yazı ── */
+.article-page { max-width: 760px; }
+.article-head { display: flex; flex-direction: column; gap: 16px; margin-bottom: 32px; }
+.article h1 { font-size: clamp(2.1rem, 5vw, 3rem); line-height: 1.1; }
+.lede { font-size: 1.2rem; color: var(--muted); line-height: 1.55; font-family: var(--font-serif); }
+.article-cover { width: 100%; aspect-ratio: 1200 / 630; object-fit: cover; border-radius: 16px; margin-bottom: 36px; border: 1px solid var(--line); }
+.prose { font-size: 1.12rem; line-height: 1.8; color: var(--ink-2); }
+.prose p { white-space: pre-wrap; margin: 0 0 1.3em; }
+.prose h2 { font-family: var(--font-serif); font-size: 1.65rem; font-weight: 600; margin: 1.6em 0 0.6em; color: var(--ink); }
+.comments { margin-top: 56px; padding-top: 32px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 18px; }
+.comments h2 { font-size: 1.5rem; }
+.comment-form { display: flex; gap: 12px; align-items: flex-start; }
+.comment-form textarea { min-height: 88px; }
+.comment-list { display: flex; flex-direction: column; }
+.comment { display: flex; gap: 12px; align-items: flex-start; padding: 16px 0; border-top: 1px solid var(--line); }
+.comment p { white-space: pre-wrap; margin-top: 4px; color: var(--ink-2); font-size: 0.95rem; line-height: 1.6; }
+.mine-thumb { width: 80px; aspect-ratio: 1200 / 630; border-radius: 8px; object-fit: cover; flex: none; border: 1px solid var(--line); }
+/* ── Düzenleyici ── */
+.editor { min-height: calc(100vh - var(--topbar-h)); }
+.editor-bar { position: sticky; top: var(--topbar-h); z-index: 10; display: flex; align-items: center; gap: 10px; padding: 10px 24px; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+.editor-grid { max-width: 1120px; margin: 0 auto; padding: 40px 24px 80px; display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 48px; align-items: start; }
+.editor-doc { display: flex; flex-direction: column; gap: 10px; }
+.editor-doc textarea, .editor-doc input { border: 0; box-shadow: none !important; background: transparent; padding: 0; }
+.editor-title { font-size: clamp(2rem, 4vw, 2.8rem); line-height: 1.15; min-height: 0; resize: none; overflow: hidden; }
+.editor-excerpt { font-size: 1.15rem; color: var(--muted); font-family: var(--font-serif); }
+.editor-body { min-height: 55vh; font-size: 1.1rem; line-height: 1.8; resize: none; margin-top: 16px; }
+.editor-side { position: sticky; top: calc(var(--topbar-h) + 72px); display: flex; flex-direction: column; gap: 14px; }
+.cover-pick { position: relative; display: block; cursor: pointer; border-radius: 10px; overflow: hidden; }
+.cover-prev { width: 100%; aspect-ratio: 1200 / 630; object-fit: cover; }
+.cover-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; aspect-ratio: 1200 / 630; border: 1.5px dashed var(--line-strong); border-radius: 10px; color: var(--muted); transition: all 0.15s; }
+.cover-pick:hover .cover-empty { border-color: var(--brand); color: var(--brand-text); background: var(--brand-softer); }
+.cover-busy { position: absolute; inset: 0; display: grid; place-items: center; background: rgb(255 255 255 / 0.6); }
+@media (max-width: 860px) {
+  .post-card.featured { grid-template-columns: 1fr; gap: 18px; margin-bottom: 32px; padding-bottom: 32px; }
+  .editor-grid { grid-template-columns: 1fr; padding: 24px 16px 64px; gap: 28px; }
+  .editor-side { position: static; }
+  .editor-bar { padding: 8px 12px; gap: 6px; }
+}
+@media (max-width: 640px) { .post-grid { grid-template-columns: 1fr; gap: 32px; } .blog-cats { flex-wrap: nowrap; overflow-x: auto; margin: 0 -16px 24px; padding: 0 16px; } .prose { font-size: 1.05rem; } }
+
+.notify-on { color: var(--brand); cursor: default; }

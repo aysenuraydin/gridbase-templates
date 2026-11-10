@@ -1,0 +1,8 @@
+{
+  "name": "Anket",
+  "description": "Anket oluştur, bağlantıyla paylaş, oy ver; sonuçlar canlı güncellenir.",
+  "order": 9,
+  "tags": ["realtime"],
+  "features": ["Girişsiz sonuç görme (public okuma)", "Kişi başına bir oy", "Realtime: oylar anında sayılır", "Bitiş tarihi, anketi kapatma"],
+  "tables": ["polls", "votes"]
+}
