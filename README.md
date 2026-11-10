@@ -1,50 +1,82 @@
 # GridBase şablonları
 
-[GridBase](https://panel.gridbasetr.com) için çalışır hâlde örnek uygulamalar. Her biri GridBase'in başka bir özelliğini gösterir; birini seç, tek komutla kendi projende ayağa kaldır, üstüne kendi ürününü kur.
+[GridBase](https://panel.gridbasetr.com) ile çalışan, hazır örnek uygulamalar. Her biri GridBase'in başka bir özelliğini gösterir. Birini seç, tek komutla kendi GridBase projende ayağa kaldır, üstüne kendi ürününü kur. Backend kodu yazmazsın: kimlik, tablolar, erişim kuralları, dosyalar, realtime ve bildirimler GridBase'te.
 
-```bash
-npx @gridbasetr/cli init            # listeden seç
-npx @gridbasetr/cli init blog       # doğrudan
-```
-
-`init` şablonu indirir, GridBase'te yeni bir proje açar, tabloları / kuralları / kovaları / rolleri kurar, örnek veriyi yazar ve projenin **anon key**'ini `web/.env.local`'a koyar. Sonra `cd <şablon>/web && npm install && npm run dev`. Elle kurmak istersen her şablonun README'sinde adım adım anlatılıyor.
+## Şablonlar
 
 | Şablon | Ne | Gösterdiği |
 | --- | --- | --- |
-| [`todo`](todo) | Yapılacaklar | Owner erişimi, realtime, özel kova |
-| [`auth`](auth) | Kimlik tam paket | E-posta onayı, şifremi unuttum, Google, profil + avatar, açık oturumlar, hesap silme |
-| [`blog`](blog) | Blog | Public okuma, editor rolü, yorumlar, yeni yoruma push kuralı, örnek veri |
-| [`chat`](chat) | Sohbet | Katılımcı kolonu, realtime, "yazıyor…" ve çevrimiçi (odalar), mesaj bildirimi |
-| [`shop`](shop) | E-ticaret (demo) | Public katalog, kişiye özel sepet / sipariş, admin rolü, sipariş durumu bildirimi |
-| [`users`](users) | Kullanıcı yönetimi | Uygulama içi yöneticiler (`adminRoles`), rol ver / al, engelle |
+| [`todo`](todo) | Yapılacaklar listesi | Kişiye özel veri, realtime, özel dosya kovası |
+| [`auth`](auth) | Kimlik tam paket | E-posta onayı, şifremi unuttum, Google ile giriş, profil + fotoğraf, açık oturumlar, hesap silme |
+| [`blog`](blog) | Blog | Girişsiz okuma, editor rolü, yorumlar, yeni yoruma bildirim, örnek veri |
+| [`chat`](chat) | Sohbet | Birebir ve grup, realtime, "yazıyor…", çevrimiçi göstergesi, mesaj bildirimi |
+| [`shop`](shop) | E-ticaret (demo) | Ürün kataloğu, sepet, sipariş (kapıda ödeme), yönetici paneli, sipariş durumu bildirimi |
+| [`users`](users) | Kullanıcı yönetimi | Uygulama içi yönetici: kullanıcıları ara, rol ver / al, engelle |
 | [`notes`](notes) | Notlar | Kişiyle paylaşma (salt okunur), realtime |
-| [`files`](files) | Dosyalar | Drive gibi: klasör, her tür dosya, "Row" kovasıyla paylaşma, önizleme |
-| [`polls`](polls) | Anket | Girişsiz sonuç, süzgeçli realtime |
-| [`booking`](booking) | Rezervasyon | Hizmet + boş saat, kişisel bilgi sızdırmadan doluluk, onay bildirimi |
+| [`files`](files) | Dosyalar | Drive gibi: klasörler, her tür dosya, önizleme, kişiyle paylaşma |
+| [`polls`](polls) | Anket | Bağlantıyla paylaşılan anket, kişi başına tek oy, canlı sonuç |
+| [`booking`](booking) | Rezervasyon | Hizmet ve boş saat seçimi, çifte randevu engeli, işletme ekranı, onay bildirimi |
 
-## Her şablonda
+Hepsi React + Vite + TypeScript ve [`@gridbasetr/client`](https://www.npmjs.com/package/@gridbasetr/client) ile yazıldı. Tasarım hazır, telefona uyumlu, açık ve koyu modu var.
+
+## Hızlı başlangıç
+
+**Gereksinimler:** Node.js 18 ya da üstü ve bir GridBase hesabı ([panel.gridbasetr.com](https://panel.gridbasetr.com), ücretsiz).
+
+```bash
+npx @gridbasetr/cli init blog     # ya da yalnız "init": listeden seç
+cd blog/web
+npm install
+npm run dev                       # http://localhost:5173
+```
+
+`init` sırayla şunları yapar:
+
+1. Şablonu `blog/` klasörüne indirir.
+2. Tarayıcıda GridBase panelini açar, girişini onaylarsın (şifren terminale yazılmaz).
+3. Panelde yeni bir proje açar.
+4. Tabloları, erişim kurallarını, dosya kovalarını, rolleri ve (varsa) örnek veriyi kurar.
+5. Projenin **anon key**'ini üretip `web/.env.local`'a yazar.
+
+Elle kurmak, var olan bir projeye kurmak ya da kendi GridBase sunucunu kullanmak istersen: her şablonun README'sinde **Kurulum** bölümü adım adım anlatıyor.
+
+## Anahtarlar
+
+GridBase'te her projenin iki tür anahtarı var:
+
+- **Anon key** (`gb_pk_…`): uygulamaya gömülür, herkese açıktır. Tek başına bir şey açmaz; kim neyi okur ve yazar, tabloların erişim kuralları belirler. Şablonlarda `web/.env.local` dosyasındaki `VITE_GRIDBASE_ANON_KEY`.
+- **Secret key** (`gb_sk_…`): bütün kuralları atlar. Uygulamaya, `.env` dosyalarına ya da git'e **asla** yazılmaz. Şablonlar onu hiç kullanmaz; şemayı panel hesabınla kurarsın.
+
+Bu depoda hiçbir anahtar yok: `.env.local` kurulumda senin bilgisayarında oluşur ve git'e girmez (`.gitignore`).
+
+## Bir şablonun içi
 
 ```
-<şablon>/
+blog/
   template.json        ad, açıklama, gösterdikleri
-  gridbase.config.ts   şema: tablolar, erişim, kovalar, roller, CORS, push kuralları (gridbase apply)
-  seed.json            örnek veri (varsa; gridbase seed)
-  README.md            kurulum (otomatik / elle), şema, bilinen sınırlar
-  web/                 React + Vite + TypeScript, @gridbasetr/client
+  gridbase.config.ts   şema: tablolar, kolonlar, erişim kuralları, kovalar, roller, CORS, bildirim kuralları
+  seed.json            örnek veri (varsa)
+  README.md            kurulum, şema, kurallar
+  web/                 uygulama
+    .env.example       .env.local'ın örneği (GridBase adresi + anon key)
+    src/shared/        GridBase istemcisi, giriş ekranı, ortak arayüz
+    src/               şablona özel ekranlar
 ```
 
-Şemayı değiştirmek: `gridbase.config.ts`'i düzenle → kökte `npx @gridbasetr/cli apply` (önce planı gösterir; `--prune` olmadan hiçbir şey silmez).
+**Şemayı değiştirmek:** `gridbase.config.ts`'i düzenle, şablonun kökünde `npx @gridbasetr/cli apply` çalıştır. Komut önce ne değişeceğini gösterir, onay ister; `--prune` vermezsen hiçbir şey silmez. Son kullanıcı yeni kolon açamaz: uygulamaya yeni bir alan eklemeden önce kolonu bu dosyaya ekleyip `apply` çalıştır.
 
-**Anahtarlar:** uygulamaya yalnız **anon key** (`gb_pk_…`) girer; herkese açıktır, kuralları tablolar koyar. **Secret key** (`gb_sk_…`) bütün kuralları atlar: uygulamaya, `.env` dosyasına ya da git'e konmaz. Şablonlar onu hiç kullanmaz; şemayı panel hesabınla (`gridbase login`) kurarsın.
+**Canlıya alırken:** `web/` klasöründe `npm run build`, çıkan `dist/` klasörünü herhangi bir statik barındırmaya (Cloudflare Pages, Netlify, Vercel, kendi sunucun) koy. Canlı adresini `gridbase.config.ts` › `project.cors`'a ekleyip `apply` çalıştır.
 
 ## Bu depoda geliştirme
 
-Ortak parçalar `_shared/`'de (GridBase istemcisi, giriş ekranı, stil, kurulum bölümü). Her şablon tek başına indirilebilsin diye kopyaları şablonların içinde durur; ortak bir şeyi değiştirince:
+Ortak parçalar `_shared/` klasöründe (GridBase istemcisi, giriş ekranı, stil, simgeler, README'lerin kurulum bölümü). Her şablon tek başına indirilebilsin diye kopyaları şablonların içinde durur. Ortak bir şeyi değiştirince şablonlara dağıt:
 
 ```bash
 node scripts/sync-shared.mjs
 ```
 
-Yeni şablon: klasör + `template.json` + `gridbase.config.ts` + `web/` + README'de `<!-- kurulum:başla -->` `<!-- kurulum:bitir -->` işaretleri; `sync-shared` geri kalanını doldurur. Yerelde denemek: `npx @gridbasetr/cli init <şablon> --from . --url http://localhost:5179`.
+Yeni şablon eklemek için: bir klasör, içinde `template.json`, `gridbase.config.ts`, `web/` ve README'de `<!-- kurulum:başla -->` `<!-- kurulum:bitir -->` işaretleri. `sync-shared` ortak dosyaları ve kurulum bölümünü doldurur. Yerel bir GridBase'e karşı denemek: `npx @gridbasetr/cli init <şablon> --from . --url http://localhost:5179`.
 
-MIT lisanslı.
+## Lisans
+
+MIT. Şablonları kendi projelerinde, ticari olanlar dahil, serbestçe kullanabilir ve değiştirebilirsin.
