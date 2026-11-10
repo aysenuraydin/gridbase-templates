@@ -134,3 +134,7 @@
   .shop-hero { background: radial-gradient(120% 120% at 100% 0%, #27272a, #18181b); color: var(--ink); }
   .shop-hero h1 { color: var(--ink); } .shop-hero p, .shop-hero .eyebrow, .shop-perks { color: var(--muted); }
 }
+/* Koyu modda marka beyaz: giriş panelini beyaz yerine koyu göster (yazılar --brand-ink'ten) */
+@media (prefers-color-scheme: dark) {
+  .auth-side { --brand: #27272a; --brand-ink: #fafafa; }
+}
