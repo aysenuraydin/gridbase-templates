@@ -1,5 +1,5 @@
 // GridBase şeması: `npx @gridbasetr/cli apply` sunucuyu bu dosyaya getirir (tekrar çalıştırmak güvenli).
-import { defineConfig, ownerWrite, publicRead, role } from '@gridbasetr/cli';
+import { defineConfig, publicRead, role } from '@gridbasetr/cli';
 
 export default defineConfig({
   roles: {
@@ -8,18 +8,27 @@ export default defineConfig({
   tables: {
     // Herkes okur (girişsiz de), yalnız editor rolündekiler yazar.
     categories: { access: publicRead({ write: role('editor') }), columns: ['name', 'slug'] },
+    // Yayındaki yazıyı herkes okur (girişsiz de); taslağı yalnız yazarı ve editor'ler görür. Önce taslak yalnız arayüzde
+    // gizleniyordu, API'den herkes okuyabiliyordu. Yazarı GridBase damgalar (authorId), editor'ler bütün yazıları yönetir.
     posts: {
-      access: publicRead({ write: role('editor') }),
+      access: {
+        read: 'Public', write: role('editor'), ownerColumn: 'authorId', staffRoles: ['editor'],
+        readWhen: { column: 'published', values: ['true', '*1*'] },
+      },
       columns: [
         'title', 'slug', 'excerpt', { name: 'body', type: 'Textarea' }, 'coverImage',
         { name: 'categoryId', type: 'Number' }, 'authorId', 'authorName',
         { name: 'published', type: 'Boolean' }, 'publishedAt',
       ],
     },
-    // Herkes okur (girişsiz de), girişli kullanıcı yazar, yalnız kendi yorumunu düzenler / siler; editor hepsini
-    // yönetir. ownerId'yi GridBase damgalar. postAuthorId: bildirimin gideceği kişi (yazının yazarı).
+    // Yorumu, yazıyı görebilen okur (parentAccess): yayındaki yazının yorumlarını herkes, taslağınkini yalnız yazarı ve
+    // editor'ler görür; göremediği yazıya yorum yazılamaz (403). Girişli kullanıcı yazar, yalnız kendi yorumunu düzenler /
+    // siler; editor hepsini yönetir. ownerId'yi GridBase damgalar. postAuthorId: bildirimin gideceği kişi (yazının yazarı).
     comments: {
-      access: ownerWrite({ read: 'Public', staffRoles: ['editor'] }),
+      access: {
+        read: 'Public', write: 'Authenticated', ownerColumn: 'ownerId', staffRoles: ['editor'],
+        parentAccess: { column: 'postId', table: 'posts' },
+      },
       columns: [{ name: 'postId', type: 'Number' }, { name: 'body', type: 'Textarea' }, 'authorName', 'postAuthorId', 'createdAt', 'ownerId'],
     },
   },

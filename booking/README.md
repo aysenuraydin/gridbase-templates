@@ -9,6 +9,7 @@ Hizmet seç, boş saati gör, randevu al. Kuaför, klinik, danışman, stüdyo g
 - **Push kuralı:** `bookings.status` değişince randevu sahibine bildirim
 - **Çifte randevu sunucuda engellenir:** `busy_slots`'ta `unique: [['date', 'time']]`; aynı anda iki kişi aynı saate basarsa ikincisi `409` alır
 - **İşletme ekranı:** `bookings` müşteriye özel ama `staffRoles: ['admin']` işletmeye bütün randevuları açar (onayla / iptal et)
+- **Müşteri kendi randevusunu onaylayamaz** (`update: 'Nobody'`): durumu yalnız işletme değiştirir; müşteri API'den "Onaylandı" yazmaya çalışırsa `403`, randevusunu iptal edip silebilir
 - Süreye göre ardışık dilim (90 dk = 3 dilim), geçmiş saatler kapalı, pazar kapalı
 - **Örnek veri:** 4 hizmet
 
@@ -93,7 +94,7 @@ Kendi GridBase sunucunu kullanıyorsan: `npx @gridbasetr/cli init booking --url 
 | Tablo | Okuma | Yazma | Kolonlar |
 | --- | --- | --- | --- |
 | `services` | Herkes | admin | `name`, `description`, `durationMin`, `price` |
-| `bookings` | Sahibi + admin | Sahibi + admin | `serviceId`, `serviceName`, `date`, `time`, `note`, `status`, `createdAt`, `ownerId` |
+| `bookings` | Sahibi + admin | Müşteri alır ve siler; durumu yalnız admin değiştirir | `serviceId`, `serviceName`, `date`, `time`, `note`, `status`, `createdAt`, `ownerId` |
 | `busy_slots` | Girişli | Sahibi + admin; tekil `date + time` | `date`, `time`, `ownerId` |
 
 ## Kod

@@ -3,7 +3,7 @@
 Birebir ve grup sohbeti: mesajlar anında gelir, karşı taraf yazarken "yazıyor…" görünür, kim çevrimiçi belli olur. Yeni mesajda tarayıcı bildirimi.
 
 **Gösterdiği:**
-- **Katılımcı kolonu:** her mesajın sahibi yazanı, `members`'ta id'si yazan herkes okur. Başka sohbetin mesajı kimseye gitmez; API'yi doğrudan çağıran da göremez
+- **Katılımcı kolonu + bağlı kayıttan üyelik:** sohbeti `members`'ta id'si yazan herkes okur; mesajlar sohbetten okunur (`parentAccess`): sohbeti görebilen mesajlarını da görür, üyelikten çıkarılan artık göremez. Yalnız üyesi olduğun sohbete mesaj yazılır, başkasının sohbet id'siyle `403`. API'yi doğrudan çağıran da başka sohbeti göremez
 - **Realtime:** `conversations` ve `messages` aboneliği; olay yalnız okuyabildiğin satır için gelir
 - **Odalar:** "yazıyor…" (broadcast) ve çevrimiçi (presence); tabloya yazılmaz, yalnız sohbetin üyeleri girer
 - **Push kuralı:** `messages`'a satır eklenince yazan hariç üyelere bildirim, 1 dakikadakiler tek özette
@@ -78,7 +78,7 @@ Kendi GridBase sunucunu kullanıyorsan: `npx @gridbasetr/cli init chat --url htt
 ## Nasıl çalışıyor?
 
 - Sohbet aç: rehberden kişi seç (birden çoksa grup). `conversations` satırı açılır, `members` = `"5,7,9"` (sen dahil).
-- Mesaj: `messages` satırı; `members` sohbetten kopyalanır, okuyabilecekleri o belirler. `ownerId`'yi GridBase damgalar.
+- Mesaj: `messages` satırı; okuyabilecekleri sohbetin üyeleri belirler (`parentAccess: { column: 'conversationId', table: 'conversations' }`). `members` yalnız bildirim kuralı için kopyalanır. `ownerId`'yi GridBase damgalar.
 - Ekranda son 50 mesaj (`/paged`, `id:desc`). Daha eskisini yüklemek için sayfa numarasını artır.
 - Oda: `rt.room(members)`; kendi id'n listede olmalı (GridBase denetler), 2–50 üye.
 - Kişi uygulamaya bir kez giriş yapınca rehbere düşer (`profiles`, kişi başına tek satır).
@@ -89,7 +89,7 @@ Kendi GridBase sunucunu kullanıyorsan: `npx @gridbasetr/cli init chat --url htt
 | --- | --- | --- |
 | `profiles` | Girişli okur, sahibi yazar; tekil `ownerId` | `displayName`, `email`, `ownerId` |
 | `conversations` | Owner + katılımcı `members`, realtime | `title`, `members`, `createdAt`, `ownerId` |
-| `messages` | Owner + katılımcı `members`, realtime | `conversationId`, `body`, `members`, `senderName`, `createdAt`, `ownerId` |
+| `messages` | Owner + sohbetin üyeleri (`parentAccess`), realtime | `conversationId`, `body`, `members`, `senderName`, `createdAt`, `ownerId` |
 
 ## Kod
 
