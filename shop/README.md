@@ -8,6 +8,7 @@
 - **Public katalog:** ürünler ve kategoriler girişsiz okunur, arama (`search`), kategori süzgeci
 - **Owner tabloları:** sepet, adresler ve siparişler kişiye özel; başkası API'yi çağırsa da göremez
 - **Yönetici rolü sahiplik kuralını aşar** (`owner({ staffRoles: ['admin'] })`): admin bütün siparişleri uygulamanın içinden görür ve durumunu değiştirir, sipariş müşteride kalır
+- **Sipariş verildikten sonra kilitli** (`update: 'Nobody', delete: 'Nobody'`): müşteri kendi siparişinin durumunu ("Teslim edildi") ya da tutarını API'den değiştiremez, siparişi silemez (`403`); yalnız admin değiştirir
 - **Rol:** ürün / kategori yazmak `role('admin')` ister; ürün görselleri yalnız admin yükler
 - **Push kuralı:** `orders.status` değişince sipariş sahibine bildirim (`push.rules`), "Bildirimleri aç" ile tarayıcıya
 - **Realtime:** durum değişince "Siparişlerim" ekranı kendiliğinden güncellenir
@@ -102,7 +103,7 @@ Bu şablon akışı göstermek için; gerçek satış için eksikleri bilerek b�
 | `products` | Herkes | admin | `name`, `description`, `price`, `image`, `categoryId`, `stock`, `active` |
 | `cart_items` | Sahibi | Sahibi | `productId`, `quantity`, `ownerId` |
 | `addresses` | Sahibi | Sahibi | `title`, `fullName`, `phone`, `city`, `district`, `line`, `ownerId` |
-| `orders` | Sahibi + admin | Sahibi + admin | `items` (JSON), `total`, `status`, `address`, `paymentMethod`, `note`, `createdAt`, `ownerId` |
+| `orders` | Sahibi + admin | Müşteri verir; değiştiren ve silen yalnız admin | `items` (JSON), `total`, `status`, `address`, `paymentMethod`, `note`, `createdAt`, `ownerId` |
 | `reviews` | Herkes | Sahibi (admin hepsini); tekil `productId + ownerId` | `productId`, `rating`, `body`, `authorName`, `createdAt`, `ownerId` |
 
 | Kova | Okuma | Yazma | Sınır |

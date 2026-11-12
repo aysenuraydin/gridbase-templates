@@ -17,8 +17,9 @@ export default defineConfig({
     cart_items: { access: owner(), columns: [{ name: 'productId', type: 'Number' }, { name: 'quantity', type: 'Number' }, 'ownerId'] },
     addresses: { access: owner(), columns: ['title', 'fullName', 'phone', 'city', 'district', 'line', 'ownerId'] },
     // Sipariş müşteriye özel; admin rolü bütün siparişleri görür ve durumunu değiştirir (staffRoles), sahiplik değişmez.
+    // Müşteri siparişini verdikten sonra değiştiremez (durumu "Teslim edildi" yapamaz) ve silemez: update / delete Nobody.
     orders: {
-      access: owner({ staffRoles: ['admin'] }),
+      access: owner({ staffRoles: ['admin'], update: 'Nobody', delete: 'Nobody' }),
       realtime: true, // durum değişince müşterinin ekranı da güncellenir
       columns: [{ name: 'items', type: 'Textarea' }, { name: 'total', type: 'Number' }, 'status', { name: 'address', type: 'Textarea' }, 'paymentMethod', 'note', 'createdAt', 'ownerId'],
     },

@@ -87,17 +87,19 @@ Yazı yazmak için hesabının `editor` rolünde olması gerekir. Rolü kendi uy
 
 ## Yorumları kim düzenler?
 
-`comments` tablosu `ownerWrite({ read: 'Public', staffRoles: ['editor'] })`: herkes okur (girişsiz de), girişli kullanıcı yazar, **yalnız kendi yorumunu** düzenler / siler; `editor` rolü bütün yorumları yönetir. Kural GridBase'te: başkasının yorumunu API'den değiştirmeye çalışan `403` alır.
+`comments` tablosunda girişli kullanıcı yazar, **yalnız kendi yorumunu** düzenler / siler; `editor` rolü bütün yorumları yönetir. Yorumu, yazıyı görebilen okur (`parentAccess: { column: 'postId', table: 'posts' }`): yayındaki yazının yorumlarını herkes (girişsiz de) görür, taslağınkileri yalnız yazarı ve editor'ler; göremediği yazıya yorum yazmaya çalışan `403` alır. Kural GridBase'te: başkasının yorumunu API'den değiştirmeye çalışan da `403` alır.
 
-Taslaklar (`published: false`) API'den okunabilir; arayüz yalnız yayındakileri listeler. Hassas taslak tutacaksan ayrı bir `drafts` tablosu (`owner()`) kullan.
+## Taslaklar kimde?
+
+`posts` sahipli bir tablo (`ownerColumn: 'authorId'`, yazarı GridBase damgalar) ve `readWhen: { column: 'published', values: ['true', '*1*'] }`: yayındaki yazıyı herkes okur, **taslağı yalnız yazarı ve `editor` rolü** görür. API'yi doğrudan çağıran da taslağı göremez (`404`). Editor'ler bütün yazıları düzenler (`staffRoles: ['editor']`), düzenleyince yazar değişmez. GridBase'in 12 Kasım 2026 sürümünü ve CLI 0.2.3'ü ister.
 
 ## Şema
 
 | Tablo | Okuma | Yazma | Kolonlar |
 | --- | --- | --- | --- |
 | `categories` | Herkes | editor | `name`, `slug` |
-| `posts` | Herkes | editor | `title`, `slug`, `excerpt`, `body`, `coverImage`, `categoryId`, `authorId`, `authorName`, `published`, `publishedAt` |
-| `comments` | Herkes | Sahibi (editor hepsini) | `postId`, `body`, `authorName`, `postAuthorId`, `createdAt`, `ownerId` |
+| `posts` | Yayındaki: herkes · taslak: yazarı ve editor | editor | `title`, `slug`, `excerpt`, `body`, `coverImage`, `categoryId`, `authorId`, `authorName`, `published`, `publishedAt` |
+| `comments` | Yazıyı görebilen | Sahibi (editor hepsini) | `postId`, `body`, `authorName`, `postAuthorId`, `createdAt`, `ownerId` |
 
 | Kova | Okuma | Yazma | Sınır |
 | --- | --- | --- | --- |

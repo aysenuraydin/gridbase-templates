@@ -12,9 +12,11 @@ export default defineConfig({
       realtime: true,
       columns: ['title', 'members', 'createdAt', 'ownerId'],
     },
-    // Her mesajın sahibi yazanı; members (sohbetten kopyalanır) okur. Böylece başka sohbetin mesajı kimseye gitmez.
+    // Her mesajın sahibi yazanı. Okuma sohbetten gelir (parentAccess): sohbeti görebilen (sahibi + members) mesajlarını da
+    // görür; sohbetten çıkarılan artık göremez. Yalnız üyesi olduğun sohbete mesaj yazılır, başkasının sohbet id'siyle 403.
+    // members yalnız bildirim kuralı için kopyalanır (okuma iznini o vermez).
     messages: {
-      access: owner({ participantColumn: 'members' }),
+      access: owner({ parentAccess: { column: 'conversationId', table: 'conversations' } }),
       realtime: true,
       columns: [{ name: 'conversationId', type: 'Number' }, { name: 'body', type: 'Textarea' }, 'members', 'senderName', 'createdAt', 'ownerId'],
     },

@@ -9,8 +9,9 @@ export default defineConfig({
       columns: ['name', { name: 'description', type: 'Textarea' }, { name: 'durationMin', type: 'Number' }, { name: 'price', type: 'Number' }],
     },
     // Randevu kişiye özel; admin rolü (işletme) bütün randevuları görür, onaylar / iptal eder → müşteriye bildirim.
+    // Müşteri randevusunu değiştiremez (kendi kendine "Onaylandı" yapamaz: update Nobody), yalnız iptal edip silebilir.
     bookings: {
-      access: owner({ staffRoles: ['admin'] }),
+      access: owner({ staffRoles: ['admin'], update: 'Nobody' }),
       realtime: true,
       columns: [{ name: 'serviceId', type: 'Number' }, 'serviceName', 'date', 'time', 'note', 'status', 'createdAt', 'ownerId'],
     },
