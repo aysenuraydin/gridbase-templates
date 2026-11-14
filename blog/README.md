@@ -87,7 +87,7 @@ Yazı yazmak için hesabının `editor` rolünde olması gerekir. Rolü kendi uy
 
 ## Yorumları kim düzenler?
 
-`comments` tablosunda girişli kullanıcı yazar, **yalnız kendi yorumunu** düzenler / siler; `editor` rolü bütün yorumları yönetir. Yorumu, yazıyı görebilen okur (`parentAccess: { column: 'postId', table: 'posts' }`): yayındaki yazının yorumlarını herkes (girişsiz de) görür, taslağınkileri yalnız yazarı ve editor'ler; göremediği yazıya yorum yazmaya çalışan `403` alır. Kural GridBase'te: başkasının yorumunu API'den değiştirmeye çalışan da `403` alır.
+`comments` tablosunda girişli kullanıcı yazar, **yalnız kendi yorumunu** düzenler / siler; `editor` rolü bütün yorumları yönetir. Yorumu, yazıyı görebilen okur (`parentAccess: { column: 'postId', table: 'posts' }`): yayındaki yazının yorumlarını herkes (girişsiz de) görür, taslağınkileri yalnız yazarı ve editor'ler; göremediği yazıya yorum yazmaya çalışan `403` alır. Kural GridBase'te: başkasının yorumunu API'den değiştirmeye çalışan da `403` alır. Yazı silinince yorumları da GridBase'te aynı işlemde silinir (bağlı kayıt kuralı), geride sahipsiz yorum kalmaz.
 
 ## Taslaklar kimde?
 
