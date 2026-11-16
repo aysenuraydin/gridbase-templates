@@ -19,6 +19,8 @@ for (const t of templates) {
     cpSync(join(root, '_shared/base'), web, { recursive: true });
     // Paylaşım parçaları yalnız isteyen şablonlara (template.json: "sharing": true)
     if (meta.sharing) cpSync(join(root, '_shared/sharing/people.tsx'), join(web, 'src/people.tsx'));
+    // Davet parçaları (paylaşım kodu, davet et, gelen davetler): paylaşan ve sohbet şablonları ("invites": true)
+    if (meta.sharing || meta.invites) cpSync(join(root, '_shared/sharing/invites.tsx'), join(web, 'src/invites.tsx'));
   }
   const readme = join(dir, 'README.md');
   if (existsSync(readme)) {
