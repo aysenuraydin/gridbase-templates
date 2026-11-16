@@ -11,6 +11,7 @@ import { Avatar, Empty, ErrorText, Skeleton, TopBar, navigate, useRoute } from '
 import { conversations, ensureProfile, memberIds, messages, profiles, rt, titleOf, type Conversation, type Message, type Profile } from './data';
 import { ChatView } from './ChatView';
 import { NewChat } from './NewChat';
+import { IncomingInvites } from './invites';
 import { NotifyButton } from './NotifyButton';
 
 export type MessageListener = (m: Message, type: 'insert' | 'update' | 'delete') => void;
@@ -74,10 +75,15 @@ export function ChatApp() {
 
   const open = useMemo(() => list?.find((c) => c.id === openId) ?? null, [list, openId]);
 
-  async function create(memberIdsList: string[], title: string) {
-    const members = [...new Set([me, ...memberIdsList])].join(',');
+  // Sohbeti yalnız kendinle açar, kişileri davet eder (kod ya da e-posta); kabul eden members'a kendini yazar.
+  async function create(invitees: string[], title: string) {
+    const members = me;
     const c = await conversations.insert({ title: title || null, members, createdAt: new Date().toISOString() });
     await messages.insert({ conversationId: c.id, body: '👋', members, senderName: people.get(me)?.displayName ?? null, createdAt: new Date().toISOString() });
+    for (const v of invitees) {
+      if (v.includes('@')) await conversations.invite(c.id, v, { label: title || 'Sohbet' });
+      else await conversations.inviteByCode(c.id, v, { label: title || 'Sohbet' });
+    }
     setList((l) => (l?.some((x) => x.id === c.id) ? l : [c, ...(l ?? [])]));
     setCreating(false);
     navigate(`/c/${c.id}`);
@@ -102,6 +108,7 @@ export function ChatApp() {
             </div>
           </div>
           {error && <div style={{ padding: '0 14px' }}><ErrorText>{error}</ErrorText></div>}
+          <div style={{ padding: '0 10px' }}><IncomingInvites onAccepted={loadConversations} /></div>
           <div className="chat-items">
             {!list ? (
               [0, 1, 2].map((i) => <div key={i} className="chat-item"><Skeleton h={42} w={42} r={99} /><div className="grow stack sm"><Skeleton h={13} w="55%" /><Skeleton h={11} w="35%" /></div></div>)
@@ -146,7 +153,7 @@ export function ChatApp() {
           )}
         </section>
       </div>
-      {creating && <NewChat people={[...people.values()].filter((p) => p.ownerId !== me)} onClose={() => setCreating(false)} onCreate={create} />}
+      {creating && <NewChat onClose={() => setCreating(false)} onCreate={create} />}
     </div>
   );
 }

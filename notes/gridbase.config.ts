@@ -14,6 +14,8 @@ export default defineConfig({
     },
   },
   project: {
+    // Satıra davet: kişi paylaşım koduyla ya da e-postayla davet edilir, kabul edince katılımcı kolonuna eklenir.
+    invites: true,
     cors: ['http://localhost:5173'],
   },
 });

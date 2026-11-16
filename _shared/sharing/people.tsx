@@ -1,15 +1,15 @@
 // Kişi rehberi + paylaşma penceresi (Notlar ve Dosyalar şablonları).
-// profiles tablosu: girişte herkes kendi satırını yazar (yalnız görünen ad). Paylaşırken kişi adıyla ya da paylaşım koduyla
-// (GridBase kullanıcı id'si, "#48") seçilir. 16 Kasım 2026: profilde e-posta YOK. Önce vardı: giriş yapan herkes bütün
-// profilleri okuduğu için uygulamanın bütün e-posta listesi açıktı; alanı kullanıcı yazdığı için başkasının e-postası da
-// yazılabiliyordu (paylaşım yanlış kişiye gidebilirdi). E-postayla güvenli arama GridBase'te uç olarak gelince eklenecek.
-// Paylaşım = satırın sharedWith kolonuna id yazmak; GridBase o kişiye okuma izni verir (katılımcı kolonu).
+// profiles tablosu: girişte herkes kendi satırını yazar (yalnız görünen ad, e-posta yok): paylaşılan kişilerin adını göstermek için.
+// Paylaşmak = DAVET (16 Kasım 2026): kişinin paylaşım kodu ("K7M2-QX9P") ya da e-postasıyla davet edilir, kişi kabul edince GridBase
+// id'sini sharedWith'e (katılımcı kolonu) kendisi yazar. Önce "#48" (veritabanı id'si) ile doğrudan sharedWith'e yazılıyordu:
+// kişinin haberi olmadan ekleniyordu ve id tahmin edilebiliyordu. Erişimi kaldırmak: sahip sharedWith'ten id'yi siler.
 import { useEffect, useState } from 'react';
 import type { EndUser, Row } from '@gridbasetr/client';
 import { nameOf } from './shared/auth';
 import { errorText, table } from './shared/gridbase';
 import { Icon } from './shared/icons';
 import { Avatar, ErrorText, Modal } from './shared/ui';
+import { InviteBox, MyShareCode } from './invites';
 
 export type Profile = Row<{ displayName: string | null; ownerId: string }>;
 export const profiles = table<Omit<Profile, 'id'>>('profiles');
@@ -35,31 +35,13 @@ export function usePeople() {
   return people;
 }
 
-type ShareProps = { title: string; sharedWith: string | null; people: Map<string, Profile>; me: string; onSave: (ids: string[]) => Promise<void>; onClose: () => void };
+type ShareProps = { table: string; rowId: number; title: string; sharedWith: string | null; people: Map<string, Profile>; me: string; onSave: (ids: string[]) => Promise<void>; onClose: () => void };
 
-export function ShareDialog({ title, sharedWith, people, me, onSave, onClose }: ShareProps) {
+export function ShareDialog({ table: tableName, rowId, title, sharedWith, people, me, onSave, onClose }: ShareProps) {
   const [ids, setIds] = useState(splitIds(sharedWith));
-  const [query, setQuery] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
-
-  // Paylaşım kodu ("#48" ya da "48") kesin; ad yalnız tek kişiyle eşleşirse kabul edilir (adı kullanıcı yazar, aynı ad olabilir)
-  function add() {
-    const q = query.trim();
-    const code = q.replace(/^#/, '').split(/\s/).pop() ?? '';
-    const others = [...people.values()].filter((x) => x.ownerId !== me);
-    let p = /^\d+$/.test(code) ? people.get(code) : undefined;
-    if (!p) {
-      const byName = others.filter((x) => (x.displayName ?? '').toLocaleLowerCase('tr-TR') === q.toLocaleLowerCase('tr-TR'));
-      if (byName.length > 1) return setError('Bu adla birden çok kişi var: paylaşım kodunu yaz (ör. #48).');
-      p = byName[0];
-    }
-    if (!p) return setError('Böyle biri yok. Kişiden paylaşım kodunu iste (uygulamaya en az bir kez giriş yapmış olmalı).');
-    if (p.ownerId === me) return setError('Kendinle paylaşamazsın.');
-    setIds((l) => (l.includes(p!.ownerId) ? l : [...l, p!.ownerId]));
-    setQuery('');
-    setError(null);
-  }
+  const changed = ids.join(',') !== splitIds(sharedWith).join(',');
 
   async function save() {
     setBusy(true);
@@ -75,26 +57,19 @@ export function ShareDialog({ title, sharedWith, people, me, onSave, onClose }: 
   return (
     <Modal
       title="Paylaş"
-      desc={<>“{title}” · paylaştığın kişiler görür, değiştiremez.</>}
+      desc={<>“{title}” · davet ettiğin kişi kabul edince görür, değiştiremez.</>}
       icon="users"
       onClose={onClose}
       footer={
         <>
-          <button className="btn" onClick={onClose}>Vazgeç</button>
-          <button className="btn primary" disabled={busy} onClick={save}>Kaydet</button>
+          <button className="btn" onClick={onClose}>Kapat</button>
+          {changed && <button className="btn primary" disabled={busy} onClick={save}>Erişimi kaldır</button>}
         </>
       }
     >
-      <div className="row">
-        <div className="input-icon grow">
-          <Icon name="users" size={16} />
-          <input placeholder="Ad ya da paylaşım kodu (#48)" value={query} list="people-names" onChange={(e) => setQuery(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), add())} autoFocus />
-        </div>
-        <datalist id="people-names">{[...people.values()].filter((p) => p.ownerId !== me).map((p) => <option key={p.id} value={`${p.displayName ?? ''} #${p.ownerId}`} />)}</datalist>
-        <button className="btn" onClick={add} disabled={!query.trim()}><Icon name="userPlus" size={16} />Ekle</button>
-      </div>
+      <InviteBox table={tableName} rowId={rowId} label={title} />
+      <MyShareCode />
       <ErrorText>{error}</ErrorText>
-      <div className="muted xs">Senin paylaşım kodun: <b>#{me}</b> (seninle paylaşmak isteyene bunu ver)</div>
       <div>
         <div className="section-title">Erişimi olanlar · {ids.length + 1}</div>
         <div className="card flush" style={{ boxShadow: 'none' }}>
@@ -108,13 +83,12 @@ export function ShareDialog({ title, sharedWith, people, me, onSave, onClose }: 
             </div>
             {ids.map((id) => (
               <div key={id} className="list-item">
-                <Avatar name={people.get(id)?.displayName ?? `#${id}`} size="sm" />
+                <Avatar name={people.get(id)?.displayName ?? 'Kullanıcı'} size="sm" />
                 <div className="grow">
-                  <div className="strong small truncate">{people.get(id)?.displayName ?? `#${id}`}</div>
-                  <div className="muted xs truncate">#{id}</div>
+                  <div className="strong small truncate">{people.get(id)?.displayName ?? 'Kullanıcı'}</div>
                 </div>
                 <span className="muted xs hide-sm">Görüntüleyebilir</span>
-                <button className="icon-btn sm danger" title="Paylaşımı kaldır" onClick={() => setIds((l) => l.filter((x) => x !== id))}><Icon name="x" size={15} /></button>
+                <button className="icon-btn sm danger" title="Erişimi kaldır" onClick={() => setIds((l) => l.filter((x) => x !== id))}><Icon name="x" size={15} /></button>
               </div>
             ))}
           </div>

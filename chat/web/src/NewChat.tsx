@@ -1,25 +1,33 @@
-// Yeni sohbet: rehberden bir ya da birden çok kişi seç (birden çoksa grup, başlık verilebilir).
+// Yeni sohbet (16 Kasım 2026): sohbeti açarsın, kişileri PAYLAŞIM KODUYLA ("K7M2-QX9P") ya da e-postayla davet edersin.
+// Kişi daveti kabul edince GridBase id'sini sohbetin members'ına kendisi yazar; sohbet ona düşer (realtime).
+// Önce rehberden "#48" seçilip doğrudan members'a yazılıyordu: kişinin haberi olmadan sohbete ekleniyordu.
+// Davet cevabı her durumda aynıdır: kabul edilmediyse kişiden kodunu tekrar iste.
 import { useState } from 'react';
 import { errorText } from './shared/gridbase';
 import { Icon } from './shared/icons';
-import { Avatar, Empty, ErrorText, Modal } from './shared/ui';
-import type { Profile } from './data';
+import { ErrorText, Modal } from './shared/ui';
+import { MyShareCode } from './invites';
 
-type Props = { people: Profile[]; onClose: () => void; onCreate: (ids: string[], title: string) => Promise<void> };
+type Props = { onClose: () => void; onCreate: (invitees: string[], title: string) => Promise<void> };
 
-export function NewChat({ people, onClose, onCreate }: Props) {
+export function NewChat({ onClose, onCreate }: Props) {
   const [picked, setPicked] = useState<string[]>([]);
   const [title, setTitle] = useState('');
-  const [q, setQ] = useState('');
+  const [value, setValue] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const shown = people.filter((p) => `${p.displayName} #${p.ownerId}`.toLocaleLowerCase('tr-TR').includes(q.toLocaleLowerCase('tr-TR')));
-  const toggle = (id: string) => setPicked((l) => (l.includes(id) ? l.filter((x) => x !== id) : [...l, id]));
+
+  function add() {
+    const v = value.trim();
+    if (!v) return;
+    setPicked((l) => (l.includes(v) ? l : [...l, v]));
+    setValue('');
+  }
 
   async function start() {
     setBusy(true);
     try {
-      await onCreate(picked, title.trim());
+      await onCreate(value.trim() ? [...new Set([...picked, value.trim()])] : picked, title.trim());
     } catch (e) {
       setError(errorText(e));
       setBusy(false);
@@ -29,57 +37,38 @@ export function NewChat({ people, onClose, onCreate }: Props) {
   return (
     <Modal
       title="Yeni sohbet"
-      desc="Bir kişi seç ya da birden çok kişiyle grup kur."
+      desc="Kişiyi paylaşım koduyla ya da e-postasıyla davet et; kabul edince sohbete katılır."
       icon="pen"
       onClose={onClose}
       footer={
         <>
-          <span className="faint small" style={{ marginRight: 'auto' }}>{picked.length ? `${picked.length} kişi seçildi` : ''}</span>
+          <span className="faint small" style={{ marginRight: 'auto' }}>{picked.length ? `${picked.length} davet` : ''}</span>
           <button className="btn" onClick={onClose}>Vazgeç</button>
-          <button className="btn primary" disabled={!picked.length || busy} onClick={start}>
-            {picked.length > 1 ? 'Grubu başlat' : 'Sohbet başlat'}
-          </button>
+          <button className="btn primary" disabled={(!picked.length && !value.trim()) || busy} onClick={start}>Başlat ve davet et</button>
         </>
       }
     >
-      <div className="input-icon">
-        <Icon name="search" size={16} />
-        <input placeholder="Ad ya da kod (#48) ara" value={q} onChange={(e) => setQ(e.target.value)} autoFocus />
+      <div className="row">
+        <div className="input-icon grow">
+          <Icon name="userPlus" size={16} />
+          <input placeholder="Paylaşım kodu (K7M2-QX9P) ya da e-posta" value={value} onChange={(e) => setValue(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), add())} autoFocus />
+        </div>
+        <button className="btn" onClick={add} disabled={!value.trim()}><Icon name="plus" size={16} />Ekle</button>
       </div>
       {picked.length > 0 && (
         <div className="row sm wrap">
-          {picked.map((id) => {
-            const p = people.find((x) => x.ownerId === id);
-            return (
-              <span key={id} className="chip gray" style={{ height: 28, paddingLeft: 3 }}>
-                <Avatar name={p?.displayName} size="xs" />{p?.displayName}
-                <button onClick={() => toggle(id)} aria-label="Çıkar"><Icon name="x" size={12} /></button>
-              </span>
-            );
-          })}
+          {picked.map((v) => (
+            <span key={v} className="chip gray" style={{ height: 28 }}>
+              {v}
+              <button onClick={() => setPicked((l) => l.filter((x) => x !== v))} aria-label="Çıkar"><Icon name="x" size={12} /></button>
+            </span>
+          ))}
         </div>
       )}
-      <div className="card flush" style={{ boxShadow: 'none', maxHeight: 320, overflowY: 'auto' }}>
-        {!shown.length ? (
-          <Empty icon="users" title="Rehberde kimse yok" plain>Arkadaşın uygulamaya bir kez giriş yapınca burada görünür.</Empty>
-        ) : (
-          <div className="list">
-            {shown.map((p) => (
-              <label key={p.id} className="list-item check person-pick">
-                <input type="checkbox" checked={picked.includes(p.ownerId)} onChange={() => toggle(p.ownerId)} />
-                <Avatar name={p.displayName} size="sm" />
-                <div className="grow">
-                  <div className="strong small truncate">{p.displayName}</div>
-                  <div className="muted xs truncate">#{p.ownerId}</div>
-                </div>
-              </label>
-            ))}
-          </div>
-        )}
-      </div>
-      {picked.length > 1 && (
-        <label>Grup adı <span className="hint">· isteğe bağlı</span><input placeholder="Örn. Proje ekibi" value={title} onChange={(e) => setTitle(e.target.value)} /></label>
-      )}
+      <label>Sohbet adı <span className="hint">· isteğe bağlı</span><input placeholder="Örn. Proje ekibi" value={title} onChange={(e) => setTitle(e.target.value)} /></label>
+      <MyShareCode />
+      <div className="muted xs">Davet kabul edilmediyse kişiden kodunu tekrar iste (yanlış yazılan kod da davet gönderilmiş gibi görünür).</div>
       <ErrorText>{error}</ErrorText>
     </Modal>
   );

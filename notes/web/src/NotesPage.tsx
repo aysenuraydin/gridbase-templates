@@ -10,6 +10,7 @@ import { errorText, gb, table } from './shared/gridbase';
 import { Icon } from './shared/icons';
 import { Avatar, Empty, ErrorText, PageHead, Skeleton, TopBar, timeAgo, useConfirm } from './shared/ui';
 import { ShareDialog, ensureProfile, splitIds, usePeople } from './people';
+import { IncomingInvites } from './invites';
 
 type Note = Row<{ title: string; body: string; color: string | null; pinned: boolean; sharedWith: string | null; ownerName: string | null; updatedAt: string | null; ownerId: string }>;
 const notes = table<Omit<Note, 'id'>>('notes');
@@ -122,6 +123,7 @@ export function NotesPage() {
           }
         />
         <ErrorText>{error}</ErrorText>
+        <IncomingInvites onAccepted={load} />
         {!list ? (
           <div className="notes-grid">{[120, 180, 140, 200].map((h, i) => <Skeleton key={i} h={h} r={16} />)}</div>
         ) : !matched.length ? (
@@ -152,6 +154,8 @@ export function NotesPage() {
       {editing && <NoteEditor note={editing === 'new' ? null : editing} readOnly={editing !== 'new' && editing.ownerId !== me} onSave={save} onClose={() => setEditing(null)} />}
       {sharing && (
         <ShareDialog
+          table="notes"
+          rowId={sharing.id}
           title={sharing.title || 'Not'}
           sharedWith={sharing.sharedWith}
           people={people}

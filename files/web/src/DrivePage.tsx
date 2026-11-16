@@ -12,6 +12,7 @@ import { errorText, gb, table } from './shared/gridbase';
 import { Icon, type IconName } from './shared/icons';
 import { Avatar, Empty, ErrorText, Modal, Skeleton, TopBar, formatBytes, formatShortDate, navigate, useConfirm, useRoute } from './shared/ui';
 import { ShareDialog, ensureProfile, splitIds, usePeople } from './people';
+import { IncomingInvites } from './invites';
 
 type DriveFile = Row<{ name: string; fileName: string | null; size: number; contentType: string | null; folder: string; sharedWith: string | null; ownerName: string | null; createdAt: string | null; ownerId: string }>;
 const files = table<Omit<DriveFile, 'id'>>('drive_files');
@@ -222,6 +223,7 @@ export function DrivePage() {
             </div>
           )}
           <ErrorText>{error}</ErrorText>
+          <IncomingInvites onAccepted={load} />
 
           {!list ? (
             <div className="card flush">{[0, 1, 2, 3].map((i) => <div key={i} className="list-item"><Skeleton h={36} w={36} r={8} /><Skeleton h={14} w={`${50 - i * 8}%`} /></div>)}</div>
@@ -310,6 +312,8 @@ export function DrivePage() {
       )}
       {sharing && (
         <ShareDialog
+          table="drive_files"
+          rowId={sharing.id}
           title={sharing.name}
           sharedWith={sharing.sharedWith}
           people={people}
