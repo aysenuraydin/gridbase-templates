@@ -106,7 +106,8 @@ export function DrivePage() {
   async function remove(f: DriveFile) {
     if (!(await confirm.ask({ title: 'Dosya silinsin mi?', body: `“${f.name}” kalıcı olarak silinecek. Paylaştığın kişiler de artık göremez.`, ok: 'Sil', danger: true }))) return;
     try {
-      if (f.fileName) await gb.storage.remove(f.fileName);
+      // Kovada deleteWithRow açık: satır silinince dosya da silinir. Eski sunucuda / ayar kapalıyken de çalışsın diye önce elle siliniyor.
+      if (f.fileName) await gb.storage.remove(f.fileName).catch(() => undefined);
       await files.delete(f.id);
       setList((l) => l?.filter((x) => x.id !== f.id) ?? l);
     } catch (e) {

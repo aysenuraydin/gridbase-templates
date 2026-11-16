@@ -87,9 +87,11 @@ Kendi GridBase sunucunu kullanıyorsan: `npx @gridbasetr/cli init chat --url htt
 
 | Tablo | Erişim | Kolonlar |
 | --- | --- | --- |
-| `profiles` | Girişli okur, sahibi yazar; tekil `ownerId` | `displayName`, `email`, `ownerId` |
+| `profiles` | Girişli okur, sahibi yazar; tekil `ownerId` | `displayName`, `ownerId` |
 | `conversations` | Owner + katılımcı `members`, realtime | `title`, `members`, `createdAt`, `ownerId` |
 | `messages` | Owner + sohbetin üyeleri (`parentAccess`), realtime | `conversationId`, `body`, `members`, `senderName`, `createdAt`, `ownerId` |
+
+> **Profilde e-posta yok (16 Kasım 2026).** `profiles`'ı giriş yapan herkes okur; e-posta orada olsaydı uygulamanın bütün e-posta listesi açık olurdu, alanı kullanıcı yazdığı için başkasının e-postası da yazılabilirdi. Kişi adıyla ya da **paylaşım koduyla** (kullanıcının GridBase id'si, `#48`; uygulamada "Senin paylaşım kodun" olarak görünür) eklenir. Eski bir kurulumun varsa: kullanıcılar ilk girişte kendi e-postasını siler; kolonu tamamen kaldırmak için önce `npx @gridbasetr/cli apply --prune --dry-run` ile planı gör (prune dosyada olmayan her şeyi kalıcı siler), sonra `--dry-run`'sız çalıştır.
 
 ## Kod
 

@@ -4,7 +4,7 @@ Renkli notlar: ara, sabitle, istediğin kişiyle paylaş. Paylaştığın kişi 
 
 **Gösterdiği:**
 - **Owner + katılımcı kolonu:** not sahibine ait, `sharedWith`'te id'si yazan kişiler okur (yazamaz). Kural GridBase'te: başkası API'yi çağırsa da göremez
-- **Paylaşma:** e-postadan kişi bulma (kişi rehberi `profiles`), paylaşımı kaldırma
+- **Paylaşma:** kişiyi adıyla ya da paylaşım koduyla bulma (kişi rehberi `profiles`), paylaşımı kaldırma
 - **Realtime:** paylaşılan not güncellenince ya da paylaşım kaldırılınca karşı tarafta anında
 - Arama, sabitleme, renk
 
@@ -78,14 +78,16 @@ Kendi GridBase sunucunu kullanıyorsan: `npx @gridbasetr/cli init notes --url ht
 
 `notes` tablosu `owner({ participantColumn: 'sharedWith' })`: satırın sahibi `ownerId` (GridBase damgalar), okuyabilecek diğer kişiler `sharedWith` kolonunda virgülle (`"5,9"`). Paylaşmak = bu kolona id yazmak. Kişi listeden çıkarılınca realtime ona `delete` gönderir, not ekranından kalkar.
 
-Kişi rehberi (`profiles`) `ownerWrite()`: girişli herkes okur (e-postadan id bulmak için), herkes yalnız kendi satırını yazar; `ownerId` kullanıcının GridBase id'si (sunucu damgalar, taklit edilemez), kişi başına tek satır (`unique: [['ownerId']]`). Rehber yalnız ad ve e-posta tutar.
+Kişi rehberi (`profiles`) `ownerWrite()`: girişli herkes okur (addan id bulmak için), herkes yalnız kendi satırını yazar; `ownerId` kullanıcının GridBase id'si (sunucu damgalar, taklit edilemez), kişi başına tek satır (`unique: [['ownerId']]`). Rehber yalnız görünen adı tutar, e-posta tutmaz.
 
 ## Şema
 
 | Tablo | Erişim | Kolonlar |
 | --- | --- | --- |
-| `profiles` | Girişli okur, sahibi yazar | `displayName`, `email`, `ownerId` |
+| `profiles` | Girişli okur, sahibi yazar | `displayName`, `ownerId` |
 | `notes` | Owner + katılımcı `sharedWith`, realtime | `title`, `body`, `color`, `pinned`, `sharedWith`, `ownerName`, `updatedAt`, `ownerId` |
+
+> **Profilde e-posta yok (16 Kasım 2026).** `profiles`'ı giriş yapan herkes okur; e-posta orada olsaydı uygulamanın bütün e-posta listesi açık olurdu, alanı kullanıcı yazdığı için başkasının e-postası da yazılabilirdi. Kişi adıyla ya da **paylaşım koduyla** (kullanıcının GridBase id'si, `#48`; uygulamada "Senin paylaşım kodun" olarak görünür) eklenir. Eski bir kurulumun varsa: kullanıcılar ilk girişte kendi e-postasını siler; kolonu tamamen kaldırmak için önce `npx @gridbasetr/cli apply --prune --dry-run` ile planı gör (prune dosyada olmayan her şeyi kalıcı siler), sonra `--dry-run`'sız çalıştır.
 
 ## Kod
 

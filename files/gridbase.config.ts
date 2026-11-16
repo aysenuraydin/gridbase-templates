@@ -3,7 +3,7 @@ import { defineConfig, owner, ownerWrite } from '@gridbasetr/cli';
 
 export default defineConfig({
   tables: {
-    profiles: { access: ownerWrite(), columns: ['displayName', 'email', 'ownerId'], unique: [['ownerId']] },
+    profiles: { access: ownerWrite(), columns: ['displayName', 'ownerId'], unique: [['ownerId']] },
     // Her yüklenen dosyanın kaydı. Sahibi tam yetkili; sharedWith'teki kişiler görür ve indirir, değiştiremez.
     drive_files: {
       access: owner({ participantColumn: 'sharedWith' }),
@@ -13,7 +13,8 @@ export default defineConfig({
   },
   buckets: {
     // Row: dosyayı, bağlı olduğu satırı (drive_files) okuyabilen indirir → paylaşım dosyaya da geçer. Tür sınırı yok.
-    drive: { read: 'Row', write: 'Authenticated', maxSize: '100MB' },
+    // deleteWithRow (16 Kasım 2026): satır silinince (uygulama, panel, hesap silme) dosyası da silinir.
+    drive: { read: 'Row', write: 'Authenticated', maxSize: '100MB', deleteWithRow: true },
   },
   project: {
     cors: ['http://localhost:5173'],
