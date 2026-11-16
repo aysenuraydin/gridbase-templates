@@ -13,7 +13,7 @@ export function NewChat({ people, onClose, onCreate }: Props) {
   const [q, setQ] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const shown = people.filter((p) => `${p.displayName} ${p.email}`.toLocaleLowerCase('tr-TR').includes(q.toLocaleLowerCase('tr-TR')));
+  const shown = people.filter((p) => `${p.displayName} #${p.ownerId}`.toLocaleLowerCase('tr-TR').includes(q.toLocaleLowerCase('tr-TR')));
   const toggle = (id: string) => setPicked((l) => (l.includes(id) ? l.filter((x) => x !== id) : [...l, id]));
 
   async function start() {
@@ -44,7 +44,7 @@ export function NewChat({ people, onClose, onCreate }: Props) {
     >
       <div className="input-icon">
         <Icon name="search" size={16} />
-        <input placeholder="Ad ya da e-posta ara" value={q} onChange={(e) => setQ(e.target.value)} autoFocus />
+        <input placeholder="Ad ya da kod (#48) ara" value={q} onChange={(e) => setQ(e.target.value)} autoFocus />
       </div>
       {picked.length > 0 && (
         <div className="row sm wrap">
@@ -70,7 +70,7 @@ export function NewChat({ people, onClose, onCreate }: Props) {
                 <Avatar name={p.displayName} size="sm" />
                 <div className="grow">
                   <div className="strong small truncate">{p.displayName}</div>
-                  <div className="muted xs truncate">{p.email}</div>
+                  <div className="muted xs truncate">#{p.ownerId}</div>
                 </div>
               </label>
             ))}

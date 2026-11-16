@@ -5,7 +5,7 @@ export default defineConfig({
   tables: {
     // Kişi rehberi: paylaşırken e-postadan kullanıcı id'sini bulmak için. Girişli herkes okur, herkes yalnız kendi
     // satırını yazar; ownerId = GridBase kullanıcı id'si (sunucu damgalar), kişi başına tek satır.
-    profiles: { access: ownerWrite(), columns: ['displayName', 'email', 'ownerId'], unique: [['ownerId']] },
+    profiles: { access: ownerWrite(), columns: ['displayName', 'ownerId'], unique: [['ownerId']] },
     // Not sahibine ait; sharedWith'te id'si yazanlar (virgülle) okur ama değiştiremez.
     notes: {
       access: owner({ participantColumn: 'sharedWith' }),

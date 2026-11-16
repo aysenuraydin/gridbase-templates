@@ -4,7 +4,7 @@ import { createRealtime } from '@gridbasetr/client/realtime';
 import { nameOf } from './shared/auth';
 import { gb, table } from './shared/gridbase';
 
-export type Profile = Row<{ displayName: string | null; email: string | null; ownerId: string }>;
+export type Profile = Row<{ displayName: string | null; ownerId: string }>;
 export type Conversation = Row<{ title: string | null; members: string; createdAt: string | null; ownerId: string }>;
 export type Message = Row<{ conversationId: number; body: string; members: string; senderName: string | null; createdAt: string | null; ownerId: string }>;
 
@@ -20,9 +20,13 @@ export const memberIds = (c: Pick<Conversation, 'members'>) => c.members.split('
 export async function ensureProfile(user: EndUser) {
   // ownerId'yi GridBase damgalar (girişli kullanıcının id'si); tabloda kişi başına tek satır (unique).
   const mine = await profiles.one({ filter: `ownerId:eq:${user.id}` });
-  const values = { displayName: nameOf(user), email: user.email };
+  // 16 Kasım 2026: profilde e-posta yok (herkes okuduğu için bütün e-posta listesi açıktı; alan taklit de edilebiliyordu)
+  const values = { displayName: nameOf(user) };
   if (!mine) await profiles.insert(values).catch(() => undefined); // aynı anda iki sekme: ikincisi 409, sorun değil
-  else if (mine.displayName !== values.displayName || mine.email !== values.email) await profiles.update(mine.id, values);
+  else if (mine.displayName !== values.displayName) await profiles.update(mine.id, values);
+  // Eski kurulum (email kolonu duruyorsa): kendi e-postanı herkese açık profilden sil. Kolonu kaldırmak: gridbase apply --prune
+  const old = mine as (Profile & { email?: string | null }) | null;
+  if (old?.email) await profiles.update(old.id, { email: null } as never).catch(() => undefined);
 }
 
 // Sohbetin adı: başlık yoksa diğer üyelerin adları.

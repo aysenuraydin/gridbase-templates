@@ -5,7 +5,7 @@ export default defineConfig({
   tables: {
     // Kişi rehberi: girişli herkes görür (kiminle sohbet başlatacağını seçmek için), herkes yalnız kendi satırını yazar.
     // ownerId = GridBase kullanıcı id'si (sunucu damgalar); kişi başına tek satır (unique).
-    profiles: { access: ownerWrite(), columns: ['displayName', 'email', 'ownerId'], unique: [['ownerId']] },
+    profiles: { access: ownerWrite(), columns: ['displayName', 'ownerId'], unique: [['ownerId']] },
     // Sohbeti açan sahibi (ownerId); members'ta id'si yazan herkes okur (katılımcı kolonu). Virgülle: "5,7,9".
     conversations: {
       access: owner({ participantColumn: 'members' }),
