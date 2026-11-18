@@ -20,8 +20,8 @@ import { Back, Empty, ErrorText, NavLink, PageHead, SetupNotice, Skeleton, Spinn
 import { NotifyButton } from './NotifyButton';
 
 type Service = Row<{ name: string; description: string | null; durationMin: number; price: number }>;
-type Booking = Row<{ serviceId: number; serviceName: string; date: string; time: string; note: string | null; status: string; ownerId: string }>;
-type Busy = Row<{ date: string; time: string; ownerId: string | null }>;
+type Booking = Row<{ serviceId: number; serviceName: string; date: string; time: string; note: string | null; status: string; ownerId: number }>;
+type Busy = Row<{ date: string; time: string; ownerId: number | null }>;
 const services = table<Omit<Service, 'id'>>('services');
 const bookings = table<Omit<Booking, 'id'>>('bookings');
 const busy = table<Omit<Busy, 'id'>>('busy_slots');
@@ -290,7 +290,7 @@ function MinePage() {
   const { user } = useAuth();
   const today = ymd(new Date());
   // Yönetici (staffRoles) herkesin randevusunu okur; "Randevularım" yalnız kendi kayıtları.
-  const mine = list?.filter((b) => !user || b.ownerId === String(user.id)) ?? null;
+  const mine = list?.filter((b) => !user || b.ownerId === user.id) ?? null;
   const upcoming = mine?.filter((b) => b.date >= today && b.status !== 'İptal') ?? [];
   const past = mine?.filter((b) => b.date < today || b.status === 'İptal') ?? [];
   const row = (b: Booking, canCancel: boolean) => (

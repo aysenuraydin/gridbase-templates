@@ -4,9 +4,9 @@ import { createRealtime } from '@gridbasetr/client/realtime';
 import { nameOf } from './shared/auth';
 import { gb, table } from './shared/gridbase';
 
-export type Profile = Row<{ displayName: string | null; ownerId: string }>;
-export type Conversation = Row<{ title: string | null; members: string; ownerId: string }>;
-export type Message = Row<{ conversationId: number; body: string; members: string; senderName: string | null; ownerId: string }>;
+export type Profile = Row<{ displayName: string | null; ownerId: number }>;
+export type Conversation = Row<{ title: string | null; members: number[]; ownerId: number }>;
+export type Message = Row<{ conversationId: number; body: string; members: number[]; senderName: string | null; ownerId: number }>;
 
 export const profiles = table<Omit<Profile, 'id'>>('profiles');
 export const conversations = table<Omit<Conversation, 'id'>>('conversations');
@@ -14,7 +14,9 @@ export const messages = table<Omit<Message, 'id'>>('messages');
 
 export const rt = createRealtime(gb);
 
-export const memberIds = (c: Pick<Conversation, 'members'>) => c.members.split(',').map((s) => s.trim()).filter(Boolean);
+// Katılımcı kolonu sayı dizisi ([5, 8]; 19 Kasım 2026); eski "5,8" metni de okunur.
+export const memberIds = (c: Pick<Conversation, 'members'>): number[] =>
+  (Array.isArray(c.members) ? c.members : String(c.members ?? '').split(',')).map(Number).filter((n) => Number.isInteger(n) && n > 0);
 
 // Rehberde kendi satırın: girişte açılır / adın değiştiyse güncellenir.
 export async function ensureProfile(user: EndUser) {
@@ -30,7 +32,7 @@ export async function ensureProfile(user: EndUser) {
 }
 
 // Sohbetin adı: başlık yoksa diğer üyelerin adları.
-export function titleOf(c: Conversation, people: Map<string, Profile>, me: string) {
+export function titleOf(c: Conversation, people: Map<number, Profile>, me: number) {
   if (c.title) return c.title;
   const others = memberIds(c).filter((id) => id !== me).map((id) => people.get(id)?.displayName ?? `#${id}`);
   return others.join(', ') || 'Yalnız sen';

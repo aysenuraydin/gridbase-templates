@@ -11,7 +11,7 @@ import { Icon } from './shared/icons';
 import { Avatar, ErrorText, Modal } from './shared/ui';
 import { InviteBox, MyShareCode } from './invites';
 
-export type Profile = Row<{ displayName: string | null; ownerId: string }>;
+export type Profile = Row<{ displayName: string | null; ownerId: number }>;
 export const profiles = table<Omit<Profile, 'id'>>('profiles');
 
 export async function ensureProfile(user: EndUser) {
@@ -25,17 +25,19 @@ export async function ensureProfile(user: EndUser) {
   if (old?.email) await profiles.update(old.id, { email: null } as never).catch(() => undefined);
 }
 
-export const splitIds = (v: string | null | undefined) => (v ?? '').split(',').map((s) => s.trim()).filter(Boolean);
+// Katılımcı kolonu GridBase'de sayı dizisi döner ([5, 8]; 19 Kasım 2026). Eski "5,8" metni de okunur.
+export const splitIds = (v: number[] | string | null | undefined): number[] =>
+  (Array.isArray(v) ? v : String(v ?? '').split(',')).map(Number).filter((n) => Number.isInteger(n) && n > 0);
 
 export function usePeople() {
-  const [people, setPeople] = useState<Map<string, Profile>>(new Map());
+  const [people, setPeople] = useState<Map<number, Profile>>(new Map());
   useEffect(() => {
     profiles.list().then((rows) => setPeople(new Map(rows.map((p) => [p.ownerId, p])))).catch(() => undefined);
   }, []);
   return people;
 }
 
-type ShareProps = { table: string; rowId: number; title: string; sharedWith: string | null; people: Map<string, Profile>; me: string; onSave: (ids: string[]) => Promise<void>; onClose: () => void };
+type ShareProps = { table: string; rowId: number; title: string; sharedWith: number[] | string | null; people: Map<number, Profile>; me: number; onSave: (ids: number[]) => Promise<void>; onClose: () => void };
 
 export function ShareDialog({ table: tableName, rowId, title, sharedWith, people, me, onSave, onClose }: ShareProps) {
   const [ids, setIds] = useState(splitIds(sharedWith));

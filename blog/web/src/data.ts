@@ -21,7 +21,7 @@ export type Comment = Row<{
   body: string;
   authorName: string | null;
   postAuthorId: string | null;
-  ownerId: string | null; // GridBase damgalar: yorumu yazan
+  ownerId: number | null; // GridBase damgalar: yorumu yazan (sayı, 19 Kasım 2026)
 }>;
 
 export const categories = table<Omit<Category, 'id'>>('categories');

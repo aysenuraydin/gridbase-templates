@@ -32,7 +32,7 @@ export function ProductPage({ id }: { id: number }) {
   if (p === undefined) return <Spinner />;
   if (!p || !p.active) return <main className="page narrow"><Empty icon="package" title="Ürün bulunamadı" action={<a className="btn" href="#/">Alışverişe dön</a>}>Satıştan kalkmış olabilir.</Empty></main>;
   const avg = list.length ? list.reduce((s, r) => s + r.rating, 0) / list.length : 0;
-  const mine = user ? list.some((r) => r.ownerId === String(user.id)) : false;
+  const mine = user ? list.some((r) => r.ownerId === user.id) : false;
 
   async function review(e: FormEvent) {
     e.preventDefault();
