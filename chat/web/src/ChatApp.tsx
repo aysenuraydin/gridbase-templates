@@ -78,8 +78,8 @@ export function ChatApp() {
   // Sohbeti yalnız kendinle açar, kişileri davet eder (kod ya da e-posta); kabul eden members'a kendini yazar.
   async function create(invitees: string[], title: string) {
     const members = me;
-    const c = await conversations.insert({ title: title || null, members, createdAt: new Date().toISOString() });
-    await messages.insert({ conversationId: c.id, body: '👋', members, senderName: people.get(me)?.displayName ?? null, createdAt: new Date().toISOString() });
+    const c = await conversations.insert({ title: title || null, members });
+    await messages.insert({ conversationId: c.id, body: '👋', members, senderName: people.get(me)?.displayName ?? null });
     for (const v of invitees) {
       if (v.includes('@')) await conversations.invite(c.id, v, { label: title || 'Sohbet' });
       else await conversations.inviteByCode(c.id, v, { label: title || 'Sohbet' });

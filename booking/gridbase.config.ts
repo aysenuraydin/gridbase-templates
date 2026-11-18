@@ -13,7 +13,7 @@ export default defineConfig({
     bookings: {
       access: owner({ staffRoles: ['admin'], update: 'Nobody' }),
       realtime: true,
-      columns: [{ name: 'serviceId', type: 'Number' }, 'serviceName', 'date', 'time', 'note', 'status', 'createdAt', 'ownerId'],
+      columns: [{ name: 'serviceId', type: 'Number' }, 'serviceName', 'date', 'time', 'note', 'status', 'ownerId'],
     },
     // Dolu saatler: kimin aldığı yazmaz, yalnız gün + saat. Girişli herkes görür (boş saatleri göstermek için),
     // yalnız alan kişi (ve admin) siler. Aynı saate ikinci kayıt sunucuda reddedilir (unique) → çifte randevu olmaz.

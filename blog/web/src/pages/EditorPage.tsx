@@ -7,7 +7,7 @@ import { errorText, gb } from '../shared/gridbase';
 import { Icon } from '../shared/icons';
 import { Empty, ErrorText, GbImage, Spinner, navigate, useConfirm } from '../shared/ui';
 
-type Draft = Omit<Post, 'id'>;
+type Draft = Omit<Post, 'id' | 'createdAt' | 'updatedAt' | 'isMine'>; // zamanları sunucu yazar
 const blank: Draft = {
   title: '', slug: '', excerpt: '', body: '', coverImage: null, categoryId: null,
   authorId: null, authorName: null, published: false, publishedAt: null,

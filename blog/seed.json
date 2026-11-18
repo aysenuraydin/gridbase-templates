@@ -52,7 +52,7 @@
     }
   ],
   "comments": [
-    { "postId": "$p1", "body": "Tam aradığım şey, teşekkürler!", "authorName": "Okur", "createdAt": "2026-11-02T10:00:00.000Z" },
-    { "postId": "$p2", "body": "Rotayı kaydettim, bu yaz deneyeceğim.", "authorName": "Gezgin", "createdAt": "2026-11-04T18:30:00.000Z" }
+    { "postId": "$p1", "body": "Tam aradığım şey, teşekkürler!", "authorName": "Okur" },
+    { "postId": "$p2", "body": "Rotayı kaydettim, bu yaz deneyeceğim.", "authorName": "Gezgin" }
   ]
 }

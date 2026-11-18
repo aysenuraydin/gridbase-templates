@@ -5,8 +5,8 @@ import { nameOf } from './shared/auth';
 import { gb, table } from './shared/gridbase';
 
 export type Profile = Row<{ displayName: string | null; ownerId: string }>;
-export type Conversation = Row<{ title: string | null; members: string; createdAt: string | null; ownerId: string }>;
-export type Message = Row<{ conversationId: number; body: string; members: string; senderName: string | null; createdAt: string | null; ownerId: string }>;
+export type Conversation = Row<{ title: string | null; members: string; ownerId: string }>;
+export type Message = Row<{ conversationId: number; body: string; members: string; senderName: string | null; ownerId: string }>;
 
 export const profiles = table<Omit<Profile, 'id'>>('profiles');
 export const conversations = table<Omit<Conversation, 'id'>>('conversations');

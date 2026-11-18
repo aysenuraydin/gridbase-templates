@@ -31,7 +31,6 @@ export function PostPage({ id }: { id: number }) {
         body: body.trim(),
         authorName: nameOf(user),
         postAuthorId: post.authorId,
-        createdAt: new Date().toISOString(),
       });
       setList((l) => [...l, c]);
       setBody('');

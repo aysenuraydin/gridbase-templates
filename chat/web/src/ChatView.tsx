@@ -83,7 +83,6 @@ export function ChatView({ conversation: c, people, me, subscribe }: Props) {
         body,
         members: c.members, // okuyabilecekler = sohbetin üyeleri
         senderName: people.get(me)?.displayName ?? null,
-        createdAt: new Date().toISOString(),
       });
       setList((l) => (!l || l.some((x) => x.id === m.id) ? l : [...l, m]));
     } catch (err) {

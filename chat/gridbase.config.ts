@@ -10,7 +10,7 @@ export default defineConfig({
     conversations: {
       access: owner({ participantColumn: 'members' }),
       realtime: true,
-      columns: ['title', 'members', 'createdAt', 'ownerId'],
+      columns: ['title', 'members', 'ownerId'],
     },
     // Her mesajın sahibi yazanı. Okuma sohbetten gelir (parentAccess): sohbeti görebilen (sahibi + members) mesajlarını da
     // görür; sohbetten çıkarılan artık göremez. Yalnız üyesi olduğun sohbete mesaj yazılır, başkasının sohbet id'siyle 403.
@@ -18,7 +18,7 @@ export default defineConfig({
     messages: {
       access: owner({ parentAccess: { column: 'conversationId', table: 'conversations' } }),
       realtime: true,
-      columns: [{ name: 'conversationId', type: 'Number' }, { name: 'body', type: 'Textarea' }, 'members', 'senderName', 'createdAt', 'ownerId'],
+      columns: [{ name: 'conversationId', type: 'Number' }, { name: 'body', type: 'Textarea' }, 'members', 'senderName', 'ownerId'],
     },
   },
   project: {

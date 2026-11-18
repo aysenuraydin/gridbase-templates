@@ -20,7 +20,7 @@ import { Back, Empty, ErrorText, NavLink, PageHead, SetupNotice, Skeleton, Spinn
 import { NotifyButton } from './NotifyButton';
 
 type Service = Row<{ name: string; description: string | null; durationMin: number; price: number }>;
-type Booking = Row<{ serviceId: number; serviceName: string; date: string; time: string; note: string | null; status: string; createdAt: string; ownerId: string }>;
+type Booking = Row<{ serviceId: number; serviceName: string; date: string; time: string; note: string | null; status: string; ownerId: string }>;
 type Busy = Row<{ date: string; time: string; ownerId: string | null }>;
 const services = table<Omit<Service, 'id'>>('services');
 const bookings = table<Omit<Booking, 'id'>>('bookings');
@@ -180,7 +180,7 @@ function BookPage({ id }: { id: number }) {
     try {
       // Önce saatler: aynı anda başkası aynı saate basarsa sunucu ikincisine 409 verir (unique date + time).
       for (const s of SLOTS.slice(start, start + n)) taken.push(await busy.insert({ date: day, time: s }));
-      await bookings.insert({ serviceId: service!.id, serviceName: service!.name, date: day, time, note: note || null, status: 'Onay bekliyor', createdAt: new Date().toISOString() });
+      await bookings.insert({ serviceId: service!.id, serviceName: service!.name, date: day, time, note: note || null, status: 'Onay bekliyor' });
       navigate('/mine');
     } catch (e) {
       for (const b of taken) await busy.delete(b.id).catch(() => undefined); // yarım kalanı geri al

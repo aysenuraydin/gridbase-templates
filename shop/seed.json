@@ -15,7 +15,7 @@
     { "name": "Not defteri seti", "description": "3'lü, noktalı sayfa.", "price": 179, "image": "/products/kitap.svg", "categoryId": "$home", "stock": 40, "active": true }
   ],
   "reviews": [
-    { "productId": "$p1", "rating": 5, "body": "Gürültü engelleme gerçekten iyi.", "authorName": "Deniz", "createdAt": "2026-11-02T10:00:00.000Z" },
-    { "productId": "$p4", "rating": 4, "body": "Kumaşı güzel, bir beden büyük alın.", "authorName": "Selin", "createdAt": "2026-11-04T12:00:00.000Z" }
+    { "productId": "$p1", "rating": 5, "body": "Gürültü engelleme gerçekten iyi.", "authorName": "Deniz" },
+    { "productId": "$p4", "rating": 4, "body": "Kumaşı güzel, bir beden büyük alın.", "authorName": "Selin" }
   ]
 }

@@ -14,8 +14,8 @@ import { errorText, gb, setupProblem, table } from './shared/gridbase';
 import { Icon } from './shared/icons';
 import { Avatar, Back, Empty, ErrorText, PageHead, SetupNotice, Skeleton, Spinner, TopBar, formatDate, formatShortDate, navigate, timeAgo, useRoute } from './shared/ui';
 
-type Poll = Row<{ question: string; options: string; authorName: string | null; endsAt: string | null; closed: boolean; createdAt: string | null; ownerId: string | null }>;
-type Vote = Row<{ pollId: number; option: number; createdAt: string | null; ownerId: string | null }>; // ownerId = oy veren (GridBase damgalar)
+type Poll = Row<{ question: string; options: string; authorName: string | null; endsAt: string | null; closed: boolean; ownerId: string | null }>;
+type Vote = Row<{ pollId: number; option: number; ownerId: string | null }>; // ownerId = oy veren (GridBase damgalar)
 const polls = table<Omit<Poll, 'id'>>('polls');
 const votes = table<Omit<Vote, 'id'>>('votes');
 const rt = createRealtime(gb);
@@ -137,7 +137,7 @@ function PollPage({ id }: { id: number }) {
     try {
       // Kişi başına bir oy: varsa değiştir. Sunucu da zorlar (unique pollId + ownerId): ikinci oy 409.
       if (mine) await votes.update(mine.id, { option: i });
-      else await votes.insert({ pollId: poll!.id, option: i, createdAt: new Date().toISOString() });
+      else await votes.insert({ pollId: poll!.id, option: i });
     } catch (e) {
       setError(errorText(e));
     }
@@ -210,7 +210,7 @@ function NewPoll() {
     try {
       const p = await polls.insert({
         question: question.trim(), options: JSON.stringify(clean), authorName: nameOf(user),
-        endsAt: endsAt ? new Date(endsAt).toISOString() : null, closed: false, createdAt: new Date().toISOString(),
+        endsAt: endsAt ? new Date(endsAt).toISOString() : null, closed: false,
       });
       navigate(`/p/${p.id}`);
     } catch (err) {

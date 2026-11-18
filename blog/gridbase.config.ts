@@ -29,7 +29,7 @@ export default defineConfig({
         read: 'Public', write: 'Authenticated', ownerColumn: 'ownerId', staffRoles: ['editor'],
         parentAccess: { column: 'postId', table: 'posts' },
       },
-      columns: [{ name: 'postId', type: 'Number' }, { name: 'body', type: 'Textarea' }, 'authorName', 'postAuthorId', 'createdAt', 'ownerId'],
+      columns: [{ name: 'postId', type: 'Number' }, { name: 'body', type: 'Textarea' }, 'authorName', 'postAuthorId', 'ownerId'],
     },
   },
   buckets: {

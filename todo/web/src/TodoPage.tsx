@@ -11,7 +11,7 @@ import { errorText, gb, table } from './shared/gridbase';
 import { Icon } from './shared/icons';
 import { Empty, ErrorText, GbImage, Modal, PageHead, Skeleton, TopBar, timeAgo } from './shared/ui';
 
-type Todo = Row<{ title: string; done: boolean; image: string | null; createdAt: string | null }>;
+type Todo = Row<{ title: string; done: boolean; image: string | null }>;
 type Filter = 'all' | 'open' | 'done';
 
 const todos = table<Omit<Todo, 'id'>>('todos');
@@ -55,7 +55,7 @@ export function TodoPage() {
     setBusy(true);
     setError(null);
     try {
-      const row = await todos.insert({ title: title.trim(), done: false, createdAt: new Date().toISOString() });
+      const row = await todos.insert({ title: title.trim(), done: false });
       if (file) {
         // Önce satır, sonra dosya: dosya satıra bağlanır (table + rowId), adı satıra yazılır.
         const name = await gb.storage.from('todo-images').upload(file, { table: 'todos', rowId: row.id });
