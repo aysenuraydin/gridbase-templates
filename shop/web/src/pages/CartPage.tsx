@@ -71,7 +71,6 @@ export function CartPage() {
         address: `${a.fullName} · ${a.phone}\n${a.line}\n${a.district} / ${a.city}`,
         paymentMethod: 'Kapıda ödeme',
         note: note || null,
-        createdAt: new Date().toISOString(),
       });
       await Promise.all(items!.map((i) => cart.delete(i.id)));
       window.dispatchEvent(new Event('cart-changed'));

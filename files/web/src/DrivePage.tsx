@@ -14,7 +14,7 @@ import { Avatar, Empty, ErrorText, Modal, Skeleton, TopBar, formatBytes, formatS
 import { ShareDialog, ensureProfile, splitIds, usePeople } from './people';
 import { IncomingInvites } from './invites';
 
-type DriveFile = Row<{ name: string; fileName: string | null; size: number; contentType: string | null; folder: string; sharedWith: string | null; ownerName: string | null; createdAt: string | null; ownerId: string }>;
+type DriveFile = Row<{ name: string; fileName: string | null; size: number; contentType: string | null; folder: string; sharedWith: string | null; ownerName: string | null; ownerId: string }>;
 const files = table<Omit<DriveFile, 'id'>>('drive_files');
 const rt = createRealtime(gb);
 
@@ -75,7 +75,7 @@ export function DrivePage() {
       setUploading((u) => [...u, file.name]);
       try {
         const row = await files.insert({
-          name: file.name, size: file.size, contentType: file.type || null, folder, sharedWith: '', ownerName: nameOf(user), createdAt: new Date().toISOString(), fileName: null,
+          name: file.name, size: file.size, contentType: file.type || null, folder, sharedWith: '', ownerName: nameOf(user), fileName: null,
         });
         try {
           const fileName = await gb.storage.from('drive').upload(file, { table: 'drive_files', rowId: row.id });

@@ -37,7 +37,8 @@ export function errorText(e: unknown): string {
   if (e instanceof GridBaseError) {
     if (e.status === 0) return 'Sunucuya ulaşılamadı. İnternet bağlantını ve VITE_GRIDBASE_URL\'yi kontrol et.';
     if (e.errors?.length) return e.errors.join(' ');
-    return e.message;
+    // SDK 0.1.10+: message İngilizce (koddan), sunucunun Türkçe metni serverMessage'da. 0.1.9'da alan yok: message zaten Türkçe.
+    return (e as { serverMessage?: string }).serverMessage ?? e.message;
   }
   return e instanceof Error ? e.message : String(e);
 }

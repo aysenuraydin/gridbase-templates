@@ -21,7 +21,6 @@ export type Comment = Row<{
   body: string;
   authorName: string | null;
   postAuthorId: string | null;
-  createdAt: string | null;
   ownerId: string | null; // GridBase damgalar: yorumu yazan
 }>;
 

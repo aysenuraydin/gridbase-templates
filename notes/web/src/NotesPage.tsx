@@ -12,7 +12,7 @@ import { Avatar, Empty, ErrorText, PageHead, Skeleton, TopBar, timeAgo, useConfi
 import { ShareDialog, ensureProfile, splitIds, usePeople } from './people';
 import { IncomingInvites } from './invites';
 
-type Note = Row<{ title: string; body: string; color: string | null; pinned: boolean; sharedWith: string | null; ownerName: string | null; updatedAt: string | null; ownerId: string }>;
+type Note = Row<{ title: string; body: string; color: string | null; pinned: boolean; sharedWith: string | null; ownerName: string | null; ownerId: string }>;
 const notes = table<Omit<Note, 'id'>>('notes');
 const rt = createRealtime(gb);
 // Renkler satıra hex olarak yazılır (eski kayıtlarla uyumlu); ekranda her birinin açık / koyu tema tonu app.css'te.
@@ -51,7 +51,7 @@ export function NotesPage() {
   }, [user, load]);
 
   async function save(n: Partial<Note> & { id?: number }) {
-    const values = { title: n.title ?? '', body: n.body ?? '', color: n.color ?? COLORS[0], pinned: !!n.pinned, updatedAt: new Date().toISOString() };
+    const values = { title: n.title ?? '', body: n.body ?? '', color: n.color ?? COLORS[0], pinned: !!n.pinned };
     const row = n.id ? await notes.update(n.id, values) : await notes.insert({ ...values, sharedWith: '', ownerName: nameOf(user) });
     setList((l) => (l?.some((x) => x.id === row.id) ? l.map((x) => (x.id === row.id ? row : x)) : [row, ...(l ?? [])]));
   }

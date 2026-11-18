@@ -9,7 +9,7 @@ import { Empty, ErrorText, GbImage, Modal, PageHead, Spinner, formatShortDate } 
 import { tone } from './OrdersPage';
 import { STATUS, categories, money, orders, parseLines, products, type Category, type Order, type Product } from '../data';
 
-type Draft = Omit<Product, 'id'> & { id?: number };
+type Draft = Omit<Product, 'id' | 'createdAt' | 'updatedAt' | 'isMine'> & { id?: number }; // zamanları sunucu yazar
 const blank: Draft = { name: '', description: '', price: 0, image: null, categoryId: null, stock: 0, active: true };
 
 export function AdminPage() {

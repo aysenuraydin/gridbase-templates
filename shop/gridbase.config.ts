@@ -21,12 +21,12 @@ export default defineConfig({
     orders: {
       access: owner({ staffRoles: ['admin'], update: 'Nobody', delete: 'Nobody' }),
       realtime: true, // durum değişince müşterinin ekranı da güncellenir
-      columns: [{ name: 'items', type: 'Textarea' }, { name: 'total', type: 'Number' }, 'status', { name: 'address', type: 'Textarea' }, 'paymentMethod', 'note', 'createdAt', 'ownerId'],
+      columns: [{ name: 'items', type: 'Textarea' }, { name: 'total', type: 'Number' }, 'status', { name: 'address', type: 'Textarea' }, 'paymentMethod', 'note', 'ownerId'],
     },
     // Herkes okur, herkes yalnız kendi yorumunu düzenler (admin hepsini); ürün başına kişi başı tek yorum.
     reviews: {
       access: ownerWrite({ read: 'Public', staffRoles: ['admin'] }),
-      columns: [{ name: 'productId', type: 'Number' }, { name: 'rating', type: 'Number' }, { name: 'body', type: 'Textarea' }, 'authorName', 'createdAt', 'ownerId'],
+      columns: [{ name: 'productId', type: 'Number' }, { name: 'rating', type: 'Number' }, { name: 'body', type: 'Textarea' }, 'authorName', 'ownerId'],
       unique: [['productId', 'ownerId']],
     },
   },

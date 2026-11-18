@@ -10,7 +10,7 @@ export default defineConfig({
     notes: {
       access: owner({ participantColumn: 'sharedWith' }),
       realtime: true,
-      columns: ['title', { name: 'body', type: 'Textarea' }, 'color', { name: 'pinned', type: 'Boolean' }, 'sharedWith', 'ownerName', 'updatedAt', 'ownerId'],
+      columns: ['title', { name: 'body', type: 'Textarea' }, 'color', { name: 'pinned', type: 'Boolean', default: false }, 'sharedWith', 'ownerName', 'ownerId'],
     },
   },
   project: {

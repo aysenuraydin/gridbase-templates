@@ -38,7 +38,7 @@ export function ProductPage({ id }: { id: number }) {
     e.preventDefault();
     setReviewError(null);
     try {
-      const r = await reviews.insert({ productId: id, rating, body, authorName: nameOf(user), createdAt: new Date().toISOString() });
+      const r = await reviews.insert({ productId: id, rating, body, authorName: nameOf(user) });
       setList((l) => [r, ...l]);
       setBody('');
     } catch (err) {

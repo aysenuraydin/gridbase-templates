@@ -8,7 +8,7 @@ export default defineConfig({
     drive_files: {
       access: owner({ participantColumn: 'sharedWith' }),
       realtime: true,
-      columns: ['name', 'fileName', { name: 'size', type: 'Number' }, 'contentType', 'folder', 'sharedWith', 'ownerName', 'createdAt', 'ownerId'],
+      columns: ['name', 'fileName', { name: 'size', type: 'Number' }, 'contentType', 'folder', 'sharedWith', 'ownerName', 'ownerId'],
     },
   },
   buckets: {

@@ -8,7 +8,7 @@ import { errorText, gb, table } from './shared/gridbase';
 import { Icon } from './shared/icons';
 import { Avatar, Empty, ErrorText, PageHead, Skeleton, formatDate, timeAgo } from './shared/ui';
 
-type Announcement = Row<{ title: string; body: string; authorName: string | null; createdAt: string | null }>;
+type Announcement = Row<{ title: string; body: string; authorName: string | null }>;
 const announcements = table<Omit<Announcement, 'id'>>('announcements');
 const rt = createRealtime(gb);
 
@@ -35,7 +35,7 @@ export function AnnouncementsPage() {
     e.preventDefault();
     setError(null);
     try {
-      const a = await announcements.insert({ title, body, authorName: nameOf(user), createdAt: new Date().toISOString() });
+      const a = await announcements.insert({ title, body, authorName: nameOf(user) });
       setList((l) => (l?.some((x) => x.id === a.id) ? l : [a, ...(l ?? [])]));
       setTitle('');
       setBody('');
