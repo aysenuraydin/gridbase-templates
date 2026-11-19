@@ -8,12 +8,12 @@ import { Avatar, ErrorText, Spinner, colorOf, formatTime } from './shared/ui';
 import { memberIds, messages, rt, titleOf, type Conversation, type Message, type Profile } from './data';
 import type { MessageListener } from './ChatApp';
 
-type Props = { conversation: Conversation; people: Map<string, Profile>; me: string; subscribe: (fn: MessageListener) => () => void };
+type Props = { conversation: Conversation; people: Map<number, Profile>; me: number; subscribe: (fn: MessageListener) => () => void };
 
 export function ChatView({ conversation: c, people, me, subscribe }: Props) {
   const [list, setList] = useState<Message[] | null>(null);
   const [text, setText] = useState('');
-  const [online, setOnline] = useState<Set<string>>(new Set());
+  const [online, setOnline] = useState<Set<number>>(new Set());
   const [typing, setTyping] = useState<Record<string, number>>({});
   const [error, setError] = useState<string | null>(null);
   const room = useRef<Room | null>(null);
@@ -36,7 +36,7 @@ export function ChatView({ conversation: c, people, me, subscribe }: Props) {
     let r: Room | null = null;
     if (members.length >= 2 && members.includes(me)) {
       r = rt.room(members, { onError: (e) => console.warn(e.message) });
-      r.onPresence((users) => setOnline(new Set(users.map((u) => u.userId))));
+      r.onPresence((users) => setOnline(new Set(users.map((u) => Number(u.userId)))));   // id'ler sayı (19 Kasım 2026)
       r.onBroadcast((e) => {
         if (e.event === 'typing' && e.from) setTyping((t) => ({ ...t, [e.from!]: Date.now() }));
       });
@@ -61,8 +61,8 @@ export function ChatView({ conversation: c, people, me, subscribe }: Props) {
     return () => clearInterval(t);
   }, []);
   const typingNames = Object.entries(typing)
-    .filter(([id, at]) => id !== me && Date.now() - at < 3000)
-    .map(([id]) => people.get(id)?.displayName ?? `#${id}`);
+    .filter(([id, at]) => Number(id) !== me && Date.now() - at < 3000)
+    .map(([id]) => people.get(Number(id))?.displayName ?? `#${id}`);
 
   function onType(v: string) {
     setText(v);

@@ -14,8 +14,8 @@ import { errorText, gb, setupProblem, table } from './shared/gridbase';
 import { Icon } from './shared/icons';
 import { Avatar, Back, Empty, ErrorText, PageHead, SetupNotice, Skeleton, Spinner, TopBar, formatDate, formatShortDate, navigate, timeAgo, useRoute } from './shared/ui';
 
-type Poll = Row<{ question: string; options: string; authorName: string | null; endsAt: string | null; closed: boolean; ownerId: string | null }>;
-type Vote = Row<{ pollId: number; option: number; ownerId: string | null }>; // ownerId = oy veren (GridBase damgalar)
+type Poll = Row<{ question: string; options: string; authorName: string | null; endsAt: string | null; closed: boolean; ownerId: number | null }>;
+type Vote = Row<{ pollId: number; option: number; ownerId: number | null }>; // ownerId = oy veren (GridBase damgalar)
 const polls = table<Omit<Poll, 'id'>>('polls');
 const votes = table<Omit<Vote, 'id'>>('votes');
 const rt = createRealtime(gb);
@@ -126,7 +126,7 @@ function PollPage({ id }: { id: number }) {
   if (poll === undefined) return <Spinner />;
   if (!poll) return <main className="page narrow"><Empty icon="chart" title="Anket bulunamadı" action={<a className="btn" href="#/">Anketlere dön</a>}>Bağlantı yanlış ya da anket silinmiş olabilir.</Empty></main>;
   const opts = optionsOf(poll);
-  const mine = user ? list.find((v) => v.ownerId === String(user.id)) : undefined;
+  const mine = user ? list.find((v) => v.ownerId === user.id) : undefined;
   const counts = opts.map((_, i) => list.filter((v) => v.option === i).length);
   const total = list.length;
   const open = isOpen(poll);
@@ -180,7 +180,7 @@ function PollPage({ id }: { id: number }) {
         </div>
         <div className="card-foot">
           <span className="hint row sm"><span className="live on">Canlı</span></span>
-          {user && poll.ownerId === String(user.id) && open && (
+          {user && poll.ownerId === user.id && open && (
             <button className="btn sm danger" onClick={() => polls.update(poll.id, { closed: true }).then(setPoll)}><Icon name="lock" size={14} />Anketi kapat</button>
           )}
           <button className="btn sm" onClick={() => navigator.clipboard?.writeText(window.location.href).then(() => setCopied(true))}>

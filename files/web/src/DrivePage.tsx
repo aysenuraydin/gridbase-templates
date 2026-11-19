@@ -14,7 +14,7 @@ import { Avatar, Empty, ErrorText, Modal, Skeleton, TopBar, formatBytes, formatS
 import { ShareDialog, ensureProfile, splitIds, usePeople } from './people';
 import { IncomingInvites } from './invites';
 
-type DriveFile = Row<{ name: string; fileName: string | null; size: number; contentType: string | null; folder: string; sharedWith: string | null; ownerName: string | null; ownerId: string }>;
+type DriveFile = Row<{ name: string; fileName: string | null; size: number; contentType: string | null; folder: string; sharedWith: number[]; ownerName: string | null; ownerId: number }>;
 const files = table<Omit<DriveFile, 'id'>>('drive_files');
 const rt = createRealtime(gb);
 
@@ -40,7 +40,7 @@ const FileIcon = ({ f }: { f: DriveFile }) => {
 
 export function DrivePage() {
   const { user } = useAuth();
-  const me = String(user!.id);
+  const me = user!.id;   // sayı: ownerId de sayı (19 Kasım 2026)
   const people = usePeople();
   const route = useRoute();
   const shared = route[0] === 'shared';
@@ -75,7 +75,7 @@ export function DrivePage() {
       setUploading((u) => [...u, file.name]);
       try {
         const row = await files.insert({
-          name: file.name, size: file.size, contentType: file.type || null, folder, sharedWith: '', ownerName: nameOf(user), fileName: null,
+          name: file.name, size: file.size, contentType: file.type || null, folder, sharedWith: [], ownerName: nameOf(user), fileName: null,
         });
         try {
           const fileName = await gb.storage.from('drive').upload(file, { table: 'drive_files', rowId: row.id });
@@ -320,7 +320,7 @@ export function DrivePage() {
           me={me}
           onClose={() => setSharing(null)}
           onSave={async (ids) => {
-            const row = await files.update(sharing.id, { sharedWith: ids.join(',') });
+            const row = await files.update(sharing.id, { sharedWith: ids });
             setList((l) => l?.map((x) => (x.id === row.id ? row : x)) ?? l);
           }}
         />

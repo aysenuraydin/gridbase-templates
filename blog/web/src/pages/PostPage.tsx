@@ -104,12 +104,12 @@ export function PostPage({ id }: { id: number }) {
               <div className="grow">
                 <div className="row sm">
                   <strong className="small">{c.authorName}</strong>
-                  {c.ownerId && c.ownerId === post.authorId && <span className="badge">Yazar</span>}
+                  {c.ownerId && String(c.ownerId) === post.authorId && <span className="badge">Yazar</span>}
                   <span className="faint xs" title={formatDate(c.createdAt)}>{timeAgo(c.createdAt)}</span>
                 </div>
                 <p>{c.body}</p>
               </div>
-              {user && (c.ownerId === String(user.id) || hasRole(user, 'editor')) && (
+              {user && (c.ownerId === user.id || hasRole(user, 'editor')) && (
                 <button className="icon-btn sm danger hover-reveal" title="Sil" onClick={() => remove(c)}><Icon name="trash" size={14} /></button>
               )}
             </div>

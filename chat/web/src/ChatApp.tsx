@@ -18,10 +18,10 @@ export type MessageListener = (m: Message, type: 'insert' | 'update' | 'delete')
 
 export function ChatApp() {
   const { user } = useAuth();
-  const me = String(user!.id);
+  const me = user!.id;   // sayı: ownerId ve members de sayı (19 Kasım 2026)
   const route = useRoute();
   const openId = route[0] === 'c' ? Number(route[1]) : null;
-  const [people, setPeople] = useState<Map<string, Profile>>(new Map());
+  const [people, setPeople] = useState<Map<number, Profile>>(new Map());
   const [list, setList] = useState<Conversation[] | null>(null);
   const [unread, setUnread] = useState<Record<number, number>>({});
   const [creating, setCreating] = useState(false);
@@ -77,7 +77,7 @@ export function ChatApp() {
 
   // Sohbeti yalnız kendinle açar, kişileri davet eder (kod ya da e-posta); kabul eden members'a kendini yazar.
   async function create(invitees: string[], title: string) {
-    const members = me;
+    const members = [me];
     const c = await conversations.insert({ title: title || null, members });
     await messages.insert({ conversationId: c.id, body: '👋', members, senderName: people.get(me)?.displayName ?? null });
     for (const v of invitees) {
