@@ -18,7 +18,7 @@ export default defineConfig({
     messages: {
       access: owner({ parentAccess: { column: 'conversationId', table: 'conversations' } }),
       realtime: true,
-      columns: [{ name: 'conversationId', type: 'Number' }, { name: 'body', type: 'Textarea' }, 'members', 'senderName', 'ownerId'],
+      columns: [{ name: 'conversationId', type: 'number' }, { name: 'body', type: 'text' }, 'members', 'senderName', 'ownerId'],
     },
   },
   project: {

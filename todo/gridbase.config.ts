@@ -7,7 +7,7 @@ export default defineConfig({
     todos: {
       access: owner(),
       realtime: true, // başka sekmede / cihazda yapılan değişiklik anında gelir
-      columns: ['title', { name: 'done', type: 'Boolean', default: false }, 'image', 'ownerId'],
+      columns: ['title', { name: 'done', type: 'boolean', default: false }, 'image', 'ownerId'],
     },
   },
   buckets: {

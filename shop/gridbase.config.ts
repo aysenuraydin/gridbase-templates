@@ -11,22 +11,22 @@ export default defineConfig({
     categories: { access: publicRead({ write: role('admin') }), columns: ['name', 'slug'] },
     products: {
       access: publicRead({ write: role('admin') }),
-      columns: ['name', { name: 'description', type: 'Textarea' }, { name: 'price', type: 'Number' }, 'image', { name: 'categoryId', type: 'Number' }, { name: 'stock', type: 'Number' }, { name: 'active', type: 'Boolean' }],
+      columns: ['name', { name: 'description', type: 'text' }, { name: 'price', type: 'number' }, 'image', { name: 'categoryId', type: 'number' }, { name: 'stock', type: 'number' }, { name: 'active', type: 'boolean' }],
     },
     // Kişiye özel: sepet, adresler, siparişler. Yalnız sahibi okur / yazar (ownerId'yi GridBase damgalar).
-    cart_items: { access: owner(), columns: [{ name: 'productId', type: 'Number' }, { name: 'quantity', type: 'Number' }, 'ownerId'] },
+    cart_items: { access: owner(), columns: [{ name: 'productId', type: 'number' }, { name: 'quantity', type: 'number' }, 'ownerId'] },
     addresses: { access: owner(), columns: ['title', 'fullName', 'phone', 'city', 'district', 'line', 'ownerId'] },
     // Sipariş müşteriye özel; admin rolü bütün siparişleri görür ve durumunu değiştirir (staffRoles), sahiplik değişmez.
     // Müşteri siparişini verdikten sonra değiştiremez (durumu "Teslim edildi" yapamaz) ve silemez: update / delete Nobody.
     orders: {
       access: owner({ staffRoles: ['admin'], update: 'Nobody', delete: 'Nobody' }),
       realtime: true, // durum değişince müşterinin ekranı da güncellenir
-      columns: [{ name: 'items', type: 'Textarea' }, { name: 'total', type: 'Number' }, 'status', { name: 'address', type: 'Textarea' }, 'paymentMethod', 'note', 'ownerId'],
+      columns: [{ name: 'items', type: 'text' }, { name: 'total', type: 'number' }, 'status', { name: 'address', type: 'text' }, 'paymentMethod', 'note', 'ownerId'],
     },
     // Herkes okur, herkes yalnız kendi yorumunu düzenler (admin hepsini); ürün başına kişi başı tek yorum.
     reviews: {
       access: ownerWrite({ read: 'Public', staffRoles: ['admin'] }),
-      columns: [{ name: 'productId', type: 'Number' }, { name: 'rating', type: 'Number' }, { name: 'body', type: 'Textarea' }, 'authorName', 'ownerId'],
+      columns: [{ name: 'productId', type: 'number' }, { name: 'rating', type: 'number' }, { name: 'body', type: 'text' }, 'authorName', 'ownerId'],
       unique: [['productId', 'ownerId']],
     },
   },

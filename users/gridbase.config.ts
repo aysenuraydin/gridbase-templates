@@ -12,7 +12,7 @@ export default defineConfig({
     announcements: {
       access: authenticated({ write: role('moderator') }),
       realtime: true,
-      columns: ['title', { name: 'body', type: 'Textarea' }, 'authorName'],
+      columns: ['title', { name: 'body', type: 'text' }, 'authorName'],
     },
   },
   project: {
