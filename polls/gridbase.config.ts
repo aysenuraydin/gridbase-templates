@@ -7,14 +7,14 @@ export default defineConfig({
     polls: {
       access: ownerWrite({ read: 'Public' }),
       realtime: true,
-      columns: ['question', { name: 'options', type: 'Textarea' }, 'authorName', 'endsAt', { name: 'closed', type: 'Boolean', default: false }, 'ownerId'],
+      columns: ['question', { name: 'options', type: 'text' }, 'authorName', 'endsAt', { name: 'closed', type: 'boolean', default: false }, 'ownerId'],
     },
     // Oylar herkese açık sayılır (sonuç için), herkes yalnız kendi oyunu değiştirir. Kişi başına bir oy sunucuda:
     // aynı ankete ikinci oy 409 (unique pollId + ownerId; ownerId'yi GridBase damgalar).
     votes: {
       access: ownerWrite({ read: 'Public' }),
       realtime: true,
-      columns: [{ name: 'pollId', type: 'Number' }, { name: 'option', type: 'Number' }, 'ownerId'],
+      columns: [{ name: 'pollId', type: 'number' }, { name: 'option', type: 'number' }, 'ownerId'],
       unique: [['pollId', 'ownerId']],
     },
   },

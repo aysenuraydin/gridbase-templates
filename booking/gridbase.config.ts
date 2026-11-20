@@ -6,14 +6,14 @@ export default defineConfig({
   tables: {
     services: {
       access: publicRead({ write: role('admin') }),
-      columns: ['name', { name: 'description', type: 'Textarea' }, { name: 'durationMin', type: 'Number' }, { name: 'price', type: 'Number' }],
+      columns: ['name', { name: 'description', type: 'text' }, { name: 'durationMin', type: 'number' }, { name: 'price', type: 'number' }],
     },
     // Randevu kişiye özel; admin rolü (işletme) bütün randevuları görür, onaylar / iptal eder → müşteriye bildirim.
     // Müşteri randevusunu değiştiremez (kendi kendine "Onaylandı" yapamaz: update Nobody), yalnız iptal edip silebilir.
     bookings: {
       access: owner({ staffRoles: ['admin'], update: 'Nobody' }),
       realtime: true,
-      columns: [{ name: 'serviceId', type: 'Number' }, 'serviceName', 'date', 'time', 'note', 'status', 'ownerId'],
+      columns: [{ name: 'serviceId', type: 'number' }, 'serviceName', 'date', 'time', 'note', 'status', 'ownerId'],
     },
     // Dolu saatler: kimin aldığı yazmaz, yalnız gün + saat. Girişli herkes görür (boş saatleri göstermek için),
     // yalnız alan kişi (ve admin) siler. Aynı saate ikinci kayıt sunucuda reddedilir (unique) → çifte randevu olmaz.

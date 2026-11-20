@@ -16,9 +16,9 @@ export default defineConfig({
         readWhen: { column: 'published', values: ['true', '*1*'] },
       },
       columns: [
-        'title', 'slug', 'excerpt', { name: 'body', type: 'Textarea' }, 'coverImage',
-        { name: 'categoryId', type: 'Number' }, 'authorId', 'authorName',
-        { name: 'published', type: 'Boolean' }, 'publishedAt',
+        'title', 'slug', 'excerpt', { name: 'body', type: 'text' }, 'coverImage',
+        { name: 'categoryId', type: 'number' }, 'authorId', 'authorName',
+        { name: 'published', type: 'boolean' }, 'publishedAt',
       ],
     },
     // Yorumu, yazıyı görebilen okur (parentAccess): yayındaki yazının yorumlarını herkes, taslağınkini yalnız yazarı ve
@@ -29,7 +29,7 @@ export default defineConfig({
         read: 'Public', write: 'Authenticated', ownerColumn: 'ownerId', staffRoles: ['editor'],
         parentAccess: { column: 'postId', table: 'posts' },
       },
-      columns: [{ name: 'postId', type: 'Number' }, { name: 'body', type: 'Textarea' }, 'authorName', 'postAuthorId', 'ownerId'],
+      columns: [{ name: 'postId', type: 'number' }, { name: 'body', type: 'text' }, 'authorName', 'postAuthorId', 'ownerId'],
     },
   },
   buckets: {
